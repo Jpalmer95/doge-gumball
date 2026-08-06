@@ -1,0 +1,32 @@
+MIT License
+
+Copyright (c) 2026 Jonathan Korstad
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+------------------------------------------------------------------------------
+GUMBALL OUTPUTS
+
+Every asset the machine dispenses is licensed to the recipient and the public
+as CC0-1.0 (public domain) via its receipt, regardless of the generator used.
+Receipts are machine-readable JSON and live in outputs/receipts.jsonl and in
+the public assets archive. The underlying open-source models used
+(FLUX.1-schnell: Apache-2.0, TRELLIS/TRELLIS.2: MIT, ACE-Step: Apache-2.0)
+impose no restrictions on outputs, which is why CC0 dedication is possible.
+See docs/license-audit.md for the full per-generator audit.
