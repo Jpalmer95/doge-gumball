@@ -53,6 +53,10 @@ def machine_info(demo: bool = False) -> dict:
         "demo": demo,
         "fairness": "outcome = f(tx_hash) — SHA256 of your transaction hash "
                     "seeds the draw; every receipt is publicly replayable.",
+        "policy": "No refunds: payments are final once confirmed on-chain. "
+                  "This is a novelty machine, not a financial product. Any "
+                  "DOGE over the listed price is a much-appreciated donation "
+                  "that keeps the machine stocked.",
         "docs": {
             "fairness": "https://github.com/Jpalmer95/doge-gumball/blob/main/docs/fairness.md",
             "license": "https://github.com/Jpalmer95/doge-gumball/blob/main/docs/license-audit.md",

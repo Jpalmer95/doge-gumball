@@ -17,6 +17,7 @@ def test_machine_info_shape_and_safety():
     for c in info["categories"]:
         assert c["emoji"] and c["name"] and c["wait"]
     assert info["min_confirmations"] == 1
+    assert "No refunds" in info["policy"] and "donation" in info["policy"]
     assert "secret" not in json_dumps(info).lower()  # no secrets leaked
 
 

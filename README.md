@@ -8,6 +8,14 @@ does the machine until your transaction hash says so. Pay **5 DOGE** and tell
 the machine what you want ("a glowing potion bottle", "a chiptune boss
 theme") and it'll aim at your description.
 
+## House rules
+
+**No refunds** — payments are final once confirmed on-chain. This is a
+novelty machine, not a financial product. **Any DOGE over the listed price
+is a much-appreciated donation**: the machine never sends change, so an
+overpayment (e.g. 2 DOGE for a blind draw) keeps the difference in the
+machine address as a tip. 🐕
+
 ## Why it's fair
 
 Every gumball's outcome is a **pure deterministic function of your

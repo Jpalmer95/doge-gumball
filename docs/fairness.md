@@ -53,11 +53,25 @@ tool — the community can run it against the public receipts archive any time.
   the application layer (it could, of course, deny service — that is outside
   the fairness model and addressed in docs/security.md).
 
-## 5. Edge cases
+## 6. Refund & donation policy (house rules)
+
+* **No refunds.** Once a payment is confirmed on-chain it buys exactly one
+  draw — the gumball contract. Disappointment is not a refundable outcome.
+* **Overpayment is a donation.** Any amount ≥ 1 DOGE dispenses a blind
+  gumball; ≥ 5 DOGE dispenses a directed one. Anything above the required
+  tier stays in the machine address as a donation — the machine never sends
+  change, and the operator never rebates. (Much appreciated. 🐕)
+* The machine is a novelty/art project, not a financial product or an
+  investment. It is not licensed, regulated, or insured.
+* This policy is posted in the UI footer and exposed programmatically via
+  `GET /gumball/machine` → `policy`.
+
+## 7. Edge cases
 
 | Case | Behavior |
 |---|---|
 | Same tx submitted twice | Rejected by the used-tx ledger (one gumball per tx) |
 | Generation fails | Reservation is voided; retrying the same tx re-draws the SAME spec |
 | Directed payment, no description submitted | Treated as blind (amount still ≥ 5 DOGE is fine) |
+| Overpayment (e.g. 2 DOGE on a blind draw) | Dispenses the blind gumball; the difference stays in the machine address as a donation (§6) |
 | Operator disables a category | Blind draws re-roll from remaining categories; directed draws are rejected with a clear error |

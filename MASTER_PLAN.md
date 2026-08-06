@@ -160,6 +160,7 @@ end-to-end, with a real DOGE address.
 | 2026-08-06 | Backend = **sdk: docker** FastAPI orchestrator on cpu-basic. Gradio 6 was rejected for the UI: `launch()` re-creates the FastAPI app (wipes custom routes), `/api`+`/gradio_api` namespaces collide with its client API, and `gr.HTML` strips `<script>` (the cartoon UI would be dead). Machine still *uses* Gradio (GPU Spaces) for generation |
 | 2026-08-06 | 3D chain requires `gradio_client.handle_file()` on every image input + `resolution` as string `'512'`; song requires `infer_step` as int. Raw paths / floats raise opaque server errors |
 | 2026-08-06 | Per user steer: 3D generations go through the trellis-image-to-3d skill workflow; the machine's semaphore + ZeroGPU serialization queue them; parallelization only if the cost model proves out (docs/cost-ledger.md) |
+| 2026-08-06 | House rules: no refunds (payments final on confirmation); overpayment beyond the 1/5 DOGE tiers = donation (machine never sends change). Posted in UI footer, `/gumball/machine` → `policy`, docs/fairness.md §6 |
 
 ---
 
