@@ -28,7 +28,7 @@ from pathlib import Path
 ROOT = Path(__file__).parent
 sys.path.insert(0, str(ROOT))
 
-from fastapi import FastAPI, Request  # noqa: E402
+from fastapi import FastAPI, Request, Response  # noqa: E402
 from fastapi.middleware.cors import CORSMiddleware  # noqa: E402
 from fastapi.responses import FileResponse, JSONResponse  # noqa: E402
 from fastapi.staticfiles import StaticFiles  # noqa: E402
@@ -173,6 +173,19 @@ async def verify_receipt(receipt_id: str) -> JSONResponse:
                             else "MISMATCH — receipt does not replay!",
             })
     return JSONResponse({"error": "receipt not found"}, status_code=404)
+
+
+@app.get("/gumball/qr")
+async def get_qr() -> Response:
+    """SVG QR code of the machine address — phone wallets scan & send."""
+    import qrcode
+    from qrcode.image.svg import SvgPathImage
+
+    img = qrcode.make(config.DOGE_ADDRESS, image_factory=SvgPathImage,
+                      box_size=10, border=2)
+    svg = img.to_string().decode()
+    return Response(content=svg, media_type="image/svg+xml",
+                    headers={"Cache-Control": "public, max-age=3600"})
 
 
 @app.get("/gumball/assets/{filename}")

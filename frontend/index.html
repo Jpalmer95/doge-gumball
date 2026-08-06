@@ -290,7 +290,9 @@ async function loadMachineInfo() {
       $('modeBadge').classList.add('open');
       $('addrBox').style.display = 'block';
       $('addrBox').innerHTML = '<span class="copy" id="copyAddr" title="Copy address">📋 copy</span>'
-        + 'Send your DOGE to:<br><b>' + m.address + '</b>';
+        + 'Send your DOGE to:<br><b>' + m.address + '</b>'
+        + '<br><img src="' + BACKEND_URL + '/gumball/qr" alt="QR code of the machine address" '
+        + 'style="margin-top:8px;width:132px;height:132px;background:#fff;border:2px solid var(--ink);border-radius:10px">';
       $('copyAddr').addEventListener('click', () => copyText(m.address, 'Address copied!'));
       $('priceBlind').textContent = m.tiers.blind.doge + ' DOGE';
       $('priceDirected').textContent = m.tiers.directed.doge + ' DOGE';
