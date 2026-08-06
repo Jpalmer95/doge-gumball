@@ -215,7 +215,7 @@ async function pullLever() {
   await new Promise(r => setTimeout(r, 1700));
 
   let outcome;
-  if (BACKEND_URL && tx) {
+  if (BACKEND_URL !== null && tx) {
     outcome = await liveDispense(tx, desc);
   } else {
     if (!tx) { $('status').textContent = '🪙 Demo: paste any 64 hex chars to feel the flow.'; busy = false; $('lever').disabled = false; $('go').disabled = false; return; }
@@ -237,7 +237,7 @@ async function liveDispense(tx, desc) {
   try {
     const body = { tx_hash: tx };
     if (tier === 'directed') body.description = desc;
-    const res = await fetch(BACKEND_URL + '/api/dispense', {
+    const res = await fetch(BACKEND_URL + '/gumball/dispense', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
     });
     const data = await res.json();
@@ -273,9 +273,15 @@ function setTier(t) {
 $('go').addEventListener('click', pullLever);
 $('lever').addEventListener('click', pullLever);
 
-if (BACKEND_URL) {
+if (BACKEND_URL !== null) {
   $('modeBadge').textContent = 'LIVE';
-  $('hint').textContent = 'Live mode: pay the machine address below, then paste your real tx hash.';
+  fetch(BACKEND_URL + '/gumball/machine').then(r => r.json()).then(m => {
+    $('hint').textContent = 'Live: send ' + m.tiers.blind_doge + ' DOGE (blind) or '
+      + m.tiers.directed_doge + ' DOGE (directed) to ' + m.address
+      + ', wait for a confirmation, then paste your tx hash here.';
+  }).catch(() => {
+    $('hint').textContent = 'Live mode — backend unreachable right now.';
+  });
 } else {
   $('modeBadge').textContent = 'DEMO MODE';
 }
