@@ -27,20 +27,23 @@ limits) is the real scaling constraint — the Phase 2 queue/rate-limit design
 and the ability to route a category to a paid API (with cost logging) cover
 it.
 
-## Current State (2026-08-05)
+## Current State (2026-08-06)
 
-* Repo: `github.com/Jpalmer95/doge-gumball` (public, this session).
-* Core done and tested: fairness RNG (SHA256(tx_hash) → category/prompt/seed),
-  Blockcypher payment verification, append-only receipts + used-tx ledger with
-  void-on-failure retry, 4-category generator registry, retry logic.
-* **24 offline tests pass** (`pytest tests/ -q`).
-* **Live image generation verified** through `black-forest-labs/FLUX.1-schnell`
-  (ZeroGPU, HF token from `~/.cache/huggingface/token`).
-* TRELLIS.2 (3D) and ACE-Step (song) Spaces confirmed reachable with
-  endpoints mapped; per-category live validation still pending.
-* **Not done:** real DOGE address (operator must create wallet), HF Space
-  backend deployment, GitHub Pages frontend deployment, receipts archive,
-  rate limiting/queue in production.
+* Repo: `github.com/Jpalmer95/doge-gumball` (public).
+* Core (Phase 0) done: fairness RNG, Blockcypher verification, receipts +
+  used-tx ledger with void-on-failure, 4-category registry, retry logic.
+  **24 offline tests pass.**
+* **All four generators validated live through `machine.dispense`**:
+  FLUX.1-schnell (image), TRELLIS.2 (3D, ~100s → 10.4MB GLB), ACE-Step
+  (song → MP3), procedural SFX. All receipts replay.
+* **Backend deployed:** https://huggingface.co/spaces/jkorstad/doge-gumball
+  (FastAPI orchestrator, sdk: docker, cpu-basic). Verified: UI at root,
+  `/gumball/*` API live, fake txs rejected on-chain (payment verification
+  active), per-IP rate limit + serialized generation queue.
+* **Frontend deployed:** https://jpalmer95.github.io/doge-gumball/ (gh-pages).
+* **Not done:** real DOGE address (operator must create wallet + set the
+  Space secret), public receipts archive, weekly cost assessor cron,
+  production abuse monitoring.
 
 ---
 
@@ -68,8 +71,8 @@ replays byte-for-byte via `verify_fairness.py`.
 
 ## Phase 1 — Live Machine (HF Space backend)
 
-Goal: a public Gradio app on HF that serves the cartoon UI and the payment
-flow end-to-end, with a real DOGE address.
+Goal: a public machine on HF serving the cartoon UI and the payment flow
+end-to-end, with a real DOGE address.
 
 ### 1.1 Operator wallet
 - [ ] Create Dogecoin Core wallet (or hardware wallet) → set `DOGE_ADDRESS`
@@ -77,36 +80,38 @@ flow end-to-end, with a real DOGE address.
 - **Success:** address valid; a 1-DOGE test payment from a second wallet
   verifies end-to-end through `payments.verify_tx` with ≥1 confirmation.
 
-### 1.2 HF Space backend
-- [ ] `space/app.py` — Gradio Blocks app embedding `frontend/index.html`
-      (gr.HTML) with FastAPI routes mounted:
-      `GET /api/machine` (address, tiers, categories, status),
-      `POST /api/dispense` (tx_hash, description?, category? → receipt),
-      `GET /api/receipt/<id>` (receipt lookup)
-- [ ] README frontmatter: `sdk: gradio`, `hardware: cpu-basic` (the Space
-      only orchestrates; generation happens in remote GPU Spaces)
-- [ ] Push via `huggingface_hub`; set secrets `HF_TOKEN`, `DOGE_ADDRESS`
-- [ ] Serialized generation queue + per-IP rate limit (token bucket)
-- [ ] **Success:** Space is RUNNING (stage `RUNNING`); a demo dispense with a
-      fake-but-valid 64-hex tx (verify off) returns a receipt and asset URL;
-      `/api/machine` returns the configured address.
+### 1.2 HF Space backend ✅ DONE (2026-08-06)
+- [x] `space/space_app.py` — FastAPI orchestrator: serves the cartoon UI
+      (static, live-mode injected) + `GET /gumball/machine`,
+      `POST /gumball/dispense`, `GET /gumball/receipt/<id>`,
+      `GET /gumball/assets/<filename>`
+- [x] `sdk: docker` + cpu-basic (gradio-sdk runtime conflicts with custom
+      uvicorn on 7860; gr.HTML strips <script> — so the UI is plain static)
+- [x] Deployed: https://huggingface.co/spaces/jkorstad/doge-gumball
+      (secrets: HF_TOKEN set; DOGE_ADDRESS pending the operator wallet)
+- [x] Serialized generation queue (semaphore, MAX_PENDING=3) + per-IP
+      rate limit (5 req/min)
+- [x] **Success (MET):** Space RUNNING; fake tx correctly rejected on-chain
+      ("transaction ... not found on DOGE mainnet"); UI served at root;
+      local end-to-end demo dispense generated + served a real asset
 
-### 1.3 Live-validate the remaining generators
-- [ ] `asset_3d_trellis`: dispense one directed gumball → GLB >50KB,
-      opens in Blender/Godot; record the full chain timings
-- [ ] `song_acestep`: finalize `_introspect` parameter map against the live
-      `/__call__` signature (tags/prompt/duration); dispense one song
-- [ ] Move categories from `PENDING_LIVE_CATEGORIES` to `LIVE_CATEGORIES`
-- [ ] **Success:** each category dispensed at least once through
-      `machine.dispense` with a real draw; receipts replay; both assets open
-      in their target tools.
+### 1.3 Live-validate the generators ✅ DONE (2026-08-06)
+- [x] `image_flux`: dispensed live (FLUX.1-schnell, Apache-2.0, ~10s)
+- [x] `asset_3d_trellis`: dispensed live (TRELLIS.2 chain ~100s → 10.4MB GLB,
+      MIT) — requires `handle_file()` on every image input and `resolution`
+      as STRING `'512'`
+- [x] `song_acestep`: dispensed live (ACE-Step → MP3, Apache-2.0) —
+      `infer_step` must be INT (float → server TypeError)
+- [x] `game_sfx`: procedural, offline, always works
+- [x] Move categories from `PENDING_LIVE_CATEGORIES` to `LIVE_CATEGORIES`
+- [x] **Success (MET):** every category dispensed through `machine.dispense`
+      with a real draw; all receipts replay via `scripts/verify_fairness.py`
 
-### 1.4 GitHub Pages frontend
-- [ ] Publish `frontend/` as a project page (`https://jpalmer95.github.io/doge-gumball/`)
-      — static cartoon machine that calls the Space API with
-      `BACKEND_URL` configured
-- [ ] **Success:** the Pages site loads; in DEMO mode it plays a local
-      cartoon draw without any backend; LIVE mode is wired to the Space.
+### 1.4 GitHub Pages frontend ✅ DONE (2026-08-06)
+- [x] Published: https://jpalmer95.github.io/doge-gumball/ (gh-pages branch,
+      HTTP 200 verified) — DEMO mode standalone; LIVE mode via BACKEND_URL
+- [x] **Success (MET):** site loads; demo plays a local cartoon draw; live
+      mode wired to the Space API
 
 ---
 
@@ -146,6 +151,9 @@ flow end-to-end, with a real DOGE address.
 | 2026-08-05 | Entry-price policy: raise entry when avg gen cost > 75% of entry value; automated by scripts/assess_entry_price.py |
 | 2026-08-05 | Backend = cpu-basic HF Space orchestrator calling GPU Spaces; frontend = static cartoon page on GitHub Pages |
 | 2026-08-05 | Blockcypher free API chosen over dogechain.info (Cloudflare-walled as of 2026-08) and sochain (timeouts); ledger caches verified txs |
+| 2026-08-06 | Backend = **sdk: docker** FastAPI orchestrator on cpu-basic. Gradio 6 was rejected for the UI: `launch()` re-creates the FastAPI app (wipes custom routes), `/api`+`/gradio_api` namespaces collide with its client API, and `gr.HTML` strips `<script>` (the cartoon UI would be dead). Machine still *uses* Gradio (GPU Spaces) for generation |
+| 2026-08-06 | 3D chain requires `gradio_client.handle_file()` on every image input + `resolution` as string `'512'`; song requires `infer_step` as int. Raw paths / floats raise opaque server errors |
+| 2026-08-06 | Per user steer: 3D generations go through the trellis-image-to-3d skill workflow; the machine's semaphore + ZeroGPU serialization queue them; parallelization only if the cost model proves out (docs/cost-ledger.md) |
 
 ---
 

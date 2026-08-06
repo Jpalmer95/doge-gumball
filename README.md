@@ -77,9 +77,10 @@ MASTER_PLAN.md       the durable build/deploy roadmap
 ## Roadmap status
 
 - [x] Phase 0: fairness core, payment verification, ledger, offline generator, tests
-- [x] Live image generation (FLUX.1-schnell) verified
-- [ ] Phase 1: HF Space backend (Gradio + API), real DOGE address, live 3D/song validation
-- [ ] Phase 2: public launch — GitHub Pages frontend, receipts archive, asset vault
+- [x] Phase 1: HF Space backend (FastAPI, live at https://huggingface.co/spaces/jkorstad/doge-gumball),
+      all 4 generators live-validated, frontend on GitHub Pages
+      (https://jpalmer95.github.io/doge-gumball/)
+- [ ] Phase 2: real DOGE address, receipts archive, cost-assessor cron, launch
 
 See `MASTER_PLAN.md` for the full roadmap with success criteria.
 

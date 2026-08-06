@@ -19,9 +19,10 @@ REGISTRY: dict[str, Generator] = {
 }
 
 # Categories the operator has verified end-to-end in the live machine.
-# game_sfx is procedural (always works); image/3d/song need HF quota.
-LIVE_CATEGORIES = ["image", "game_sfx"]
-PENDING_LIVE_CATEGORIES = ["asset_3d", "song"]
+# All four were dispensed through machine.dispense with real draws on
+# 2026-08-06 (image/3d/song via ZeroGPU Spaces, sfx procedural).
+LIVE_CATEGORIES = ["image", "asset_3d", "song", "game_sfx"]
+PENDING_LIVE_CATEGORIES: list[str] = []
 
 
 def get(category: str) -> Generator:
