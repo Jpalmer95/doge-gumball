@@ -222,7 +222,7 @@
      mode on any copy with ?backend=https://space-url.
    ============================================================ */
 const params = new URLSearchParams(location.search);
-const BACKEND_URL = (params.get('backend') || '').replace(/\/+$/, '') || null;
+const BACKEND_URL = (params.get('backend') || '').replace(/\/+$/, '') || null; //SPACE_LIVE_INJECT
 
 const CATEGORY_EMOJI = { image: '🖼️', asset_3d: '🧊', song: '🎵', game_sfx: '🔊' };
 const CATEGORY_NAME = { image: 'Image', asset_3d: '3D Asset', song: 'Song', game_sfx: 'Game SFX' };
@@ -290,7 +290,9 @@ async function loadMachineInfo() {
       $('modeBadge').classList.add('open');
       $('addrBox').style.display = 'block';
       $('addrBox').innerHTML = '<span class="copy" id="copyAddr" title="Copy address">📋 copy</span>'
-        + 'Send your DOGE to:<br><b>' + m.address + '</b>';
+        + 'Send your DOGE to:<br><b>' + m.address + '</b>'
+        + '<br><img src="' + BACKEND_URL + '/gumball/qr" alt="QR code of the machine address" '
+        + 'style="margin-top:8px;width:132px;height:132px;background:#fff;border:2px solid var(--ink);border-radius:10px">';
       $('copyAddr').addEventListener('click', () => copyText(m.address, 'Address copied!'));
       $('priceBlind').textContent = m.tiers.blind.doge + ' DOGE';
       $('priceDirected').textContent = m.tiers.directed.doge + ' DOGE';
