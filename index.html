@@ -7,19 +7,18 @@
 <style>
   :root {
     --red: #e23c2e; --red-dark: #b02a1e; --cream: #fff6e5; --ink: #2b2b2b;
-    --glass: rgba(255,255,255,.35); --gold: #f6b93b; --sky: #8ed1fc;
+    --glass: rgba(255,255,255,.35); --gold: #f6b93b; --sky: #8ed1fc; --green: #6fcf6f;
   }
   * { box-sizing: border-box; margin: 0; }
   body {
     font-family: 'Comic Sans MS', 'Chalkboard SE', 'Marker Felt', system-ui, sans-serif;
     background: linear-gradient(180deg, #8ed1fc 0%, #cdefff 55%, #a8e6a1 55%, #7cc576 100%);
     min-height: 100vh; display: flex; flex-direction: column; align-items: center;
-    padding: 24px 12px 40px; color: var(--ink);
+    padding: 20px 12px 40px; color: var(--ink);
   }
   h1 { font-size: clamp(26px, 5vw, 44px); color: #fff; text-shadow: 3px 3px 0 rgba(0,0,0,.25); margin-bottom: 4px; text-align: center; }
-  .tagline { color: #fff; text-shadow: 1px 2px 0 rgba(0,0,0,.3); font-size: clamp(13px, 2.5vw, 17px); margin-bottom: 20px; text-align: center; }
+  .tagline { color: #fff; text-shadow: 1px 2px 0 rgba(0,0,0,.3); font-size: clamp(13px, 2.5vw, 17px); margin-bottom: 16px; text-align: center; }
 
-  /* ---------- the machine ---------- */
   .machine { position: relative; width: min(420px, 92vw); }
   .globe {
     position: relative; height: 240px; border-radius: 50% 50% 44% 44% / 58% 58% 38% 38%;
@@ -36,11 +35,10 @@
   }
   .cap { width: 34%; height: 26px; background: var(--red); border: 4px solid var(--red-dark); border-radius: 8px 8px 0 0; margin: 0 auto; position: relative; top: 4px; }
   .cap::after { content: ''; position: absolute; left: 50%; top: -12px; transform: translateX(-50%); width: 14px; height: 14px; border-radius: 50%; background: var(--gold); border: 2px solid var(--red-dark); }
-  .body { background: linear-gradient(180deg, var(--red) 0%, #c93427 60%, var(--red-dark) 100%); border: 6px solid var(--red-dark); border-top: none; border-radius: 0 0 22px 22px; padding: 12px 18px 18px; position: relative; }
+  .body { background: linear-gradient(180deg, var(--red) 0%, #c93427 60%, var(--red-dark) 100%); border: 6px solid var(--red-dark); border-top: none; border-radius: 0 0 22px 22px; padding: 12px 18px 18px; }
   .slot { width: 70px; height: 16px; background: #222; border-radius: 6px; margin: 0 auto 6px; box-shadow: inset 0 3px 5px #0008; }
   .slot-label { text-align: center; color: #ffe9b3; font-size: 12px; letter-spacing: 1px; margin-bottom: 8px; }
   .glass-door { background: #fff3; border: 3px solid var(--red-dark); border-radius: 10px; padding: 10px 12px; min-height: 58px; text-align: center; color: #5a1d16; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; }
-  .glass-door .mini { display: inline-block; font-size: 20px; }
   .controls { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; gap: 10px; }
   .lever { width: 62px; height: 62px; background: radial-gradient(circle at 34% 30%, #ffe08a, var(--gold) 60%, #d99a1b); border: 4px solid #8a5c08; border-radius: 50%; font-size: 26px; cursor: pointer; transition: transform .12s; box-shadow: 0 4px 0 #8a5c08; }
   .lever:active { transform: translateY(3px); box-shadow: 0 1px 0 #8a5c08; }
@@ -48,30 +46,66 @@
   .brand { color: #ffe9b3; font-size: 15px; text-align: right; line-height: 1.35; }
   .brand b { font-size: 19px; display: block; }
 
-  /* ---------- panels ---------- */
-  .panel { background: var(--cream); border: 4px solid var(--ink); border-radius: 18px; box-shadow: 6px 6px 0 rgba(0,0,0,.18); padding: 18px; width: min(560px, 94vw); margin-top: 22px; }
+  .panel { background: var(--cream); border: 4px solid var(--ink); border-radius: 18px; box-shadow: 6px 6px 0 rgba(0,0,0,.18); padding: 18px; width: min(560px, 94vw); margin-top: 20px; }
   .panel h2 { font-size: 18px; margin-bottom: 10px; }
+  .badge { display: inline-block; background: #fff3; border: 2px solid var(--ink); border-radius: 20px; padding: 2px 10px; font-size: 11px; margin-left: 6px; vertical-align: middle; }
+  .badge.open { background: var(--green); }
+  .badge.closed { background: var(--gold); }
+
   .tiers { display: flex; gap: 10px; margin-bottom: 12px; }
   .tier { flex: 1; border: 3px solid var(--ink); border-radius: 12px; padding: 10px; text-align: center; background: #fff; cursor: pointer; }
   .tier.active { background: var(--gold); box-shadow: inset 0 0 0 3px #fff; }
   .tier .price { font-size: 22px; font-weight: bold; }
   .tier .what { font-size: 12px; }
-  .row { display: flex; gap: 8px; margin-bottom: 10px; }
-  input[type=text], input[type=password] { flex: 1; border: 3px solid var(--ink); border-radius: 10px; padding: 10px 12px; font: inherit; background: #fff; }
+  .row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  input[type=text], textarea, select {
+    flex: 1; min-width: 0; border: 3px solid var(--ink); border-radius: 10px; padding: 10px 12px;
+    font: inherit; background: #fff;
+  }
+  textarea { resize: vertical; min-height: 60px; }
+  label.small { font-size: 12px; font-weight: bold; display: block; margin-bottom: 3px; }
   .btn { border: 3px solid var(--ink); border-radius: 12px; padding: 10px 16px; font: inherit; font-weight: bold; background: var(--gold); cursor: pointer; box-shadow: 3px 3px 0 rgba(0,0,0,.2); }
   .btn:disabled { opacity: .5; cursor: not-allowed; }
-  .btn.green { background: #6fcf6f; }
-  .hint { font-size: 12px; color: #666; margin-top: -4px; margin-bottom: 10px; }
-  .reveal { display: none; text-align: center; }
+  .btn.green { background: var(--green); }
+  .btn.ghost { background: #fff; box-shadow: none; }
+  .hint { font-size: 12px; color: #555; margin-bottom: 10px; }
+  .addr-box { font-family: ui-monospace, Menlo, monospace; font-size: 12px; background: #fff; border: 2px solid var(--ink); border-radius: 10px; padding: 8px 10px; word-break: break-all; margin: 6px 0 10px; display: none; }
+  .addr-box .copy { float: right; cursor: pointer; font-size: 11px; border: 1px solid var(--ink); border-radius: 6px; padding: 1px 6px; background: var(--gold); }
+
+  .steps { display: none; gap: 6px; margin: 10px 0; font-size: 12px; flex-wrap: wrap; }
+  .steps.show { display: flex; }
+  .step { flex: 1; min-width: 90px; text-align: center; border: 2px solid var(--ink); border-radius: 10px; padding: 6px 4px; background: #fff; opacity: .55; }
+  .step.done { opacity: 1; background: var(--green); }
+  .step.active { opacity: 1; background: var(--gold); animation: pulse 1s infinite; }
+  @keyframes pulse { 50% { transform: scale(1.04); } }
+
+  .status { font-size: 14px; min-height: 22px; margin-top: 8px; font-weight: bold; }
+  .error-box { display: none; border: 3px solid var(--red); background: #ffe9e6; border-radius: 12px; padding: 10px 12px; margin-top: 8px; font-size: 13px; }
+  .error-box.show { display: block; }
+  .error-box .help { margin-top: 4px; font-size: 12px; color: #7a2a20; }
+
+  .reveal { display: none; text-align: center; margin-top: 12px; }
   .reveal.show { display: block; animation: pop .5s cubic-bezier(.34,1.56,.64,1); }
   @keyframes pop { 0% { transform: scale(.4); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-  .asset-box { width: 100%; height: 170px; border: 4px dashed var(--ink); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 60px; background: #fff; margin: 10px 0; }
-  .asset-box img, .asset-box audio { max-width: 100%; max-height: 160px; border-radius: 8px; }
-  .receipt { font-family: ui-monospace, Menlo, monospace; font-size: 11px; background: #111; color: #7CFC98; border-radius: 10px; padding: 10px; text-align: left; overflow-x: auto; white-space: pre-wrap; word-break: break-all; margin-top: 10px; display: none; }
-  .footer { margin-top: 26px; max-width: 620px; text-align: center; color: #fff; text-shadow: 1px 1px 0 rgba(0,0,0,.35); font-size: 12px; line-height: 1.6; }
+  .asset-box { width: 100%; min-height: 150px; border: 4px dashed var(--ink); border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 48px; background: #fff; margin: 10px 0; padding: 8px; }
+  .asset-box img, .asset-box audio { max-width: 100%; max-height: 240px; border-radius: 8px; }
+  .asset-box .dl { font-size: 14px; margin-top: 8px; }
+  .meta { font-size: 13px; margin-top: 6px; }
+  .license { display: inline-block; border: 2px solid var(--ink); border-radius: 20px; padding: 1px 10px; font-size: 11px; font-weight: bold; background: var(--green); margin: 4px 2px; }
+  .receipt { font-family: ui-monospace, Menlo, monospace; font-size: 11px; background: #111; color: #7CFC98; border-radius: 10px; padding: 10px; text-align: left; overflow-x: auto; white-space: pre-wrap; word-break: break-all; margin-top: 10px; display: none; max-height: 260px; overflow-y: auto; }
+  .receipt.show { display: block; }
+  .verify-note { font-size: 12px; margin-top: 8px; padding: 8px; border: 2px dashed var(--ink); border-radius: 10px; background: #fff; display: none; }
+  .verify-note.show { display: block; }
+  .verify-note.ok { border-color: var(--green); }
+  .verify-note.bad { border-color: var(--red); background: #ffe9e6; }
+
+  details.help { margin-top: 12px; font-size: 13px; }
+  details.help summary { cursor: pointer; font-weight: bold; }
+  details.help ol { padding-left: 20px; margin-top: 6px; line-height: 1.7; }
+  details.help code { background: #eee; border-radius: 4px; padding: 0 4px; }
+
+  .footer { margin-top: 24px; max-width: 620px; text-align: center; color: #fff; text-shadow: 1px 1px 0 rgba(0,0,0,.35); font-size: 12px; line-height: 1.6; }
   .footer a { color: #fff; }
-  .status { font-size: 14px; min-height: 22px; margin-top: 8px; font-weight: bold; }
-  .badge { display: inline-block; background: #fff3; border: 2px solid var(--ink); border-radius: 20px; padding: 2px 10px; font-size: 11px; margin-left: 6px; }
 </style>
 </head>
 <body>
@@ -81,13 +115,13 @@
 
 <div class="machine">
   <div class="cap"></div>
-  <div class="globe" id="globe"><!-- gumballs injected by JS --></div>
+  <div class="globe" id="globe"></div>
   <div class="body">
     <div class="slot"></div>
     <div class="slot-label">INSERT COIN</div>
     <div class="glass-door" id="window">🪙 Insert a coin and pull the lever!</div>
     <div class="controls">
-      <button class="lever" id="lever" title="Pull the lever!">🎰</button>
+      <button class="lever" id="lever" aria-label="Pull the lever" title="Pull the lever!">🎰</button>
       <div class="brand"><b>DOGE</b>GUMBALL·CO</div>
     </div>
   </div>
@@ -95,31 +129,78 @@
 
 <div class="panel">
   <h2>🧾 Your turn <span class="badge" id="modeBadge">DEMO MODE</span></h2>
+
   <div class="tiers">
-    <div class="tier active" data-tier="blind" id="tierBlind">
-      <div class="price">1 DOGE</div>
+    <div class="tier active" id="tierBlind" role="button" tabindex="0" aria-pressed="true">
+      <div class="price" id="priceBlind">1 DOGE</div>
       <div class="what">🥚 Blind — total surprise</div>
     </div>
-    <div class="tier" data-tier="directed" id="tierDirected">
-      <div class="price">5 DOGE</div>
-      <div class="what">🎯 Directed — you pick the description</div>
+    <div class="tier" id="tierDirected" role="button" tabindex="0" aria-pressed="false">
+      <div class="price" id="priceDirected">5 DOGE</div>
+      <div class="what">🎯 Directed — you choose</div>
     </div>
   </div>
-  <div id="descRow" class="row" style="display:none">
-    <input type="text" id="desc" maxlength="300" placeholder="Describe your gumball… e.g. 'a glowing potion bottle'">
+
+  <div id="descRow" style="display:none">
+    <div class="row" style="margin-bottom:6px">
+      <div style="flex:1; min-width:0">
+        <label class="small" for="desc">Describe your gumball (or pick a category below)</label>
+        <textarea id="desc" maxlength="300" placeholder="e.g. 'a glowing potion bottle', 'a chiptune boss theme'"></textarea>
+      </div>
+    </div>
+    <div class="row">
+      <div style="flex:1; min-width:0">
+        <label class="small" for="cat">…and/or choose the asset type</label>
+        <select id="cat">
+          <option value="">🎲 Surprise me — random type</option>
+          <option value="image">🖼️ Image</option>
+          <option value="asset_3d">🧊 3D Asset</option>
+          <option value="song">🎵 Song</option>
+          <option value="game_sfx">🔊 Game SFX</option>
+        </select>
+      </div>
+    </div>
   </div>
+
+  <div class="addr-box" id="addrBox"></div>
+
   <div class="row">
-    <input type="text" id="tx" placeholder="Paste your DOGE transaction hash (64 hex chars)">
+    <input type="text" id="tx" placeholder="Paste your DOGE transaction hash (64 hex chars)" spellcheck="false" autocomplete="off">
   </div>
-  <div class="hint" id="hint">Demo mode: paste any 64 hex chars (e.g. 4b8f…dead) — payment verification is skipped here.</div>
+  <div class="hint" id="hint">Demo mode: paste any 64 hex chars — payment verification is skipped here.</div>
+
   <button class="btn green" id="go">🪙 Insert coin & pull the lever!</button>
+  <div class="steps" id="steps">
+    <div class="step" data-step="coin">🪙 Coin in</div>
+    <div class="step" data-step="verify">🔍 Verifying on-chain</div>
+    <div class="step" data-step="draw">🎲 Drawing</div>
+    <div class="step" data-step="gen">✨ Generating</div>
+    <div class="step" data-step="done">🎁 Dispensed</div>
+  </div>
   <div class="status" id="status"></div>
+  <div class="error-box" id="errorBox"><b id="errorTitle"></b><div class="help" id="errorHelp"></div></div>
 
   <div class="reveal" id="reveal">
     <div class="asset-box" id="assetBox">🎲</div>
-    <div id="revealText"></div>
+    <div class="meta" id="revealText"></div>
+    <div class="verify-note" id="verifyNote"></div>
+    <div class="row" style="justify-content:center">
+      <button class="btn ghost" id="btnReceipt">🧾 Toggle receipt JSON</button>
+      <button class="btn ghost" id="btnVerify">✅ Verify fairness</button>
+      <button class="btn ghost" id="btnCopy">📋 Copy receipt</button>
+    </div>
     <div class="receipt" id="receipt"></div>
   </div>
+
+  <details class="help">
+    <summary>❓ How do I find my transaction hash?</summary>
+    <ol>
+      <li>Send <b id="helpPrice">1</b> DOGE to the machine address (shown above).</li>
+      <li>Open your wallet, find the outgoing transaction, and copy its <b>transaction ID / hash</b> (64 hex characters).</li>
+      <li>Paste it above and pull the lever. The machine verifies it on-chain, then dispenses.</li>
+      <li>Same tx hash = same gumball, forever — keep it as your receipt ticket. One payment = one gumball.</li>
+    </ol>
+  </details>
 </div>
 
 <div class="footer">
@@ -133,17 +214,19 @@
 <script>
 /* ============================================================
    DOGE Gumball Machine frontend
-   - DEMO mode (default): works standalone, no backend needed.
-     The draw here is client-side and explicitly NOT the real
-     machine draw — it's a preview of the experience.
-   - LIVE mode: set BACKEND_URL to the HF Space API base, e.g.
-     https://jpalmer95-doge-gumball.hf.space  then the machine
-     verifies the real tx and returns a real receipt + asset.
+   - DEMO mode (default, and on GitHub Pages): works standalone.
+     The demo draw is client-side and NOT the real machine draw —
+     it's a preview of the experience.
+   - LIVE mode: the Space serves this file with BACKEND_URL='' so
+     it talks to its own /gumball/* API. You can also force live
+     mode on any copy with ?backend=https://space-url.
    ============================================================ */
-const BACKEND_URL = null; // e.g. "https://jpalmer95-doge-gumball.hf.space"
+const params = new URLSearchParams(location.search);
+const BACKEND_URL = (params.get('backend') || '').replace(/\/+$/, '') || null;
 
 const CATEGORY_EMOJI = { image: '🖼️', asset_3d: '🧊', song: '🎵', game_sfx: '🔊' };
 const CATEGORY_NAME = { image: 'Image', asset_3d: '3D Asset', song: 'Song', game_sfx: 'Game SFX' };
+const CATEGORY_WAIT = { image: '~15s', asset_3d: '1-2 min', song: '1-3 min', game_sfx: 'instant' };
 const BLIND_POOL = {
   image: ['space llama', 'giant gumball', 'robot barista', 'corgi astronaut', 'mushroom wizard', 'alien cat'],
   asset_3d: ['robot companion', 'treasure chest', 'magic potion bottle', 'star fighter ship', 'floating island'],
@@ -151,10 +234,14 @@ const BLIND_POOL = {
   game_sfx: ['coin pickup', 'power-up blip', 'explosion', 'jump boing', 'laser zap', 'level-up jingle'],
 };
 const STYLE = ['flat vector illustration', 'pixel art', 'comic book style', 'children\u2019s book art', 'sticker style'];
+const TX_RE = /^[0-9a-fA-F]{64}$/;
 
 const $ = id => document.getElementById(id);
 let tier = 'blind';
 let busy = false;
+let machineInfo = null;
+let lastReceipt = null;
+const IS_LIVE = BACKEND_URL !== null;
 
 /* ---- gumball decoration ---- */
 const COLORS = ['#e74c3c', '#f1c40f', '#2ecc71', '#3498db', '#9b59b6', '#e67e22', '#1abc9c', '#ff6b9d'];
@@ -173,119 +260,245 @@ function scatterGumballs() {
   }
 }
 
+/* ---- steps ---- */
+function setStep(step) {
+  document.querySelectorAll('.steps .step').forEach(s =>
+    s.classList.toggle('done', ['coin','verify','draw','gen'].indexOf(step) > ['coin','verify','draw','gen'].indexOf(s.dataset.step)));
+  document.querySelectorAll('.steps .step').forEach(s =>
+    s.classList.toggle('active', s.dataset.step === step));
+  $('steps').classList.add('show');
+}
+function clearSteps() { $('steps').classList.remove('show'); }
+
+/* ---- error panel ---- */
+function showError(title, help) {
+  $('errorTitle').textContent = title;
+  $('errorHelp').textContent = help || '';
+  $('errorBox').classList.add('show');
+}
+function clearError() { $('errorBox').classList.remove('show'); }
+
+/* ---- live machine info ---- */
+async function loadMachineInfo() {
+  if (!IS_LIVE) { $('modeBadge').textContent = 'DEMO MODE'; return; }
+  $('modeBadge').textContent = 'LIVE';
+  try {
+    const res = await fetch(BACKEND_URL + '/gumball/machine');
+    const m = await res.json();
+    machineInfo = m;
+    if (m.open) {
+      $('modeBadge').classList.add('open');
+      $('addrBox').style.display = 'block';
+      $('addrBox').innerHTML = '<span class="copy" id="copyAddr" title="Copy address">📋 copy</span>'
+        + 'Send your DOGE to:<br><b>' + m.address + '</b>';
+      $('copyAddr').addEventListener('click', () => copyText(m.address, 'Address copied!'));
+      $('priceBlind').textContent = m.tiers.blind.doge + ' DOGE';
+      $('priceDirected').textContent = m.tiers.directed.doge + ' DOGE';
+      $('helpPrice').textContent = m.tiers.blind.doge;
+      $('hint').textContent = 'Send DOGE to the address above, wait for ' + m.min_confirmations
+        + ' confirmation, then paste your tx hash below.';
+    } else {
+      $('modeBadge').classList.add('closed');
+      $('hint').textContent = m.address_hint;
+    }
+    // refresh categories from the machine
+    const sel = $('cat');
+    sel.innerHTML = '<option value="">🎲 Surprise me — random type</option>';
+    m.categories.forEach(c => {
+      const o = document.createElement('option');
+      o.value = c.key; o.textContent = c.emoji + ' ' + c.name + ' (' + c.wait + ')';
+      sel.appendChild(o);
+    });
+  } catch (e) {
+    $('hint').textContent = 'Live mode — backend unreachable right now.';
+  }
+}
+
+function copyText(text, okMsg) {
+  navigator.clipboard.writeText(text).then(() => {
+    const old = $('status').textContent; $('status').textContent = '✅ ' + okMsg;
+    setTimeout(() => { $('status').textContent = old; }, 1500);
+  }).catch(() => {});
+}
+
 /* ---- demo draw (client-side only; NOT the real machine draw) ---- */
 function demoDraw() {
   const categories = Object.keys(BLIND_POOL);
   const cat = categories[Math.floor(Math.random() * categories.length)];
   const subject = BLIND_POOL[cat][Math.floor(Math.random() * BLIND_POOL[cat].length)];
-  let prompt;
-  if (cat === 'game_sfx') prompt = subject;
-  else prompt = subject + ', ' + STYLE[Math.floor(Math.random() * STYLE.length)];
-  return { category: cat, prompt };
-}
-
-function fakeAssetFor(category) {
-  // Demo placeholder "assets" — the real machine returns actual files.
-  if (category === 'game_sfx') {
-    return '<audio controls src="data:audio/wav;base64,'
-      + 'UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA="></audio>';
-  }
-  if (category === 'song') return '<audio controls><source src="#" type="audio/mpeg"></audio><div style="font-size:14px">demo song placeholder</div>';
-  if (category === 'asset_3d') return '<div style="font-size:14px">3D model preview (GLB)<br>demo placeholder</div>';
-  return '🖼️';
+  let prompt = cat === 'game_sfx' ? subject : subject + ', ' + STYLE[Math.floor(Math.random() * STYLE.length)];
+  return { category: cat, prompt, model_seed: Math.floor(Math.random() * 2 ** 31) };
 }
 
 /* ---- the big reveal ---- */
 async function pullLever() {
   if (busy) return;
+  clearError();
   const tx = $('tx').value.trim();
   const desc = $('desc').value.trim();
+  const cat = $('cat').value;
 
-  if (tier === 'directed' && !desc) { $('status').textContent = '⚠️ Directed gumballs need a description!'; return; }
+  if (tier === 'directed' && !desc && !cat) {
+    showError('Directed gumballs need a description or category',
+      'Pay 5 DOGE and tell the machine what you want — or switch to Blind (1 DOGE) for a total surprise.');
+    return;
+  }
+  if (tx && !TX_RE.test(tx)) {
+    showError('That doesn\u2019t look like a tx hash',
+      'A Dogecoin transaction hash is exactly 64 hex characters (0-9, a-f). Copy it from your wallet\u2019s transaction details.');
+    return;
+  }
 
   busy = true;
   $('lever').disabled = true; $('go').disabled = true;
   $('reveal').classList.remove('show');
-  $('receipt').style.display = 'none';
+  $('receipt').classList.remove('show');
+  $('verifyNote').classList.remove('show');
   $('window').textContent = '🪙 Coin in…';
   $('status').textContent = '';
 
   const globe = $('globe');
   globe.classList.remove('shake'); void globe.offsetWidth; globe.classList.add('shake');
-  await new Promise(r => setTimeout(r, 1700));
+  setStep('coin');
+  await new Promise(r => setTimeout(r, 1300));
 
-  let outcome;
-  if (BACKEND_URL !== null && tx) {
-    outcome = await liveDispense(tx, desc);
+  if (IS_LIVE && tx) {
+    await liveDispense(tx, desc, cat);
   } else {
-    if (!tx) { $('status').textContent = '🪙 Demo: paste any 64 hex chars to feel the flow.'; busy = false; $('lever').disabled = false; $('go').disabled = false; return; }
-    outcome = demoDraw();
-    $('window').textContent = '✨ ' + CATEGORY_EMOJI[outcome.category] + ' It pops out a ' + CATEGORY_NAME[outcome.category] + '!';
-    await new Promise(r => setTimeout(r, 600));
-    $('assetBox').innerHTML = fakeAssetFor(outcome.category);
-    $('revealText').innerHTML = '<b>' + CATEGORY_NAME[outcome.category] + '</b><br>' + outcome.prompt;
-    $('status').textContent = '🎉 Demo draw complete — connect the backend for real paid draws.';
+    if (!tx) {
+      $('status').textContent = '🪙 Demo: paste any 64 hex chars to feel the flow.';
+      busy = false; $('lever').disabled = false; $('go').disabled = false; clearSteps();
+      return;
+    }
+    setStep('draw');
+    await new Promise(r => setTimeout(r, 700));
+    const o = demoDraw();
+    setStep('gen');
+    await new Promise(r => setTimeout(r, 900));
+    $('window').textContent = '✨ ' + CATEGORY_EMOJI[o.category] + ' It pops out a ' + CATEGORY_NAME[o.category] + '!';
+    $('assetBox').innerHTML = demoAsset(o.category);
+    $('revealText').innerHTML = '<b>' + CATEGORY_NAME[o.category] + '</b> · ' + o.prompt
+      + '<br><small>demo draw (seed ' + o.model_seed + ') — connect a live backend for real paid draws</small>';
+    setStep('done');
+    $('reveal').classList.add('show');
+    $('status').textContent = '🎉 Demo complete. The real machine runs on HF: ' + (machineInfo ? '' : 'jkorstad-doge-gumball.hf.space');
   }
-  $('reveal').classList.add('show');
   busy = false;
   $('lever').disabled = false; $('go').disabled = false;
 }
 
-/* ---- live backend call ---- */
-async function liveDispense(tx, desc) {
-  $('window').textContent = '🪙 Verifying payment on-chain…';
+function demoAsset(category) {
+  if (category === 'game_sfx') return '<audio controls src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA="></audio>';
+  if (category === 'song') return '<div style="font-size:14px">🎵 demo song placeholder<br><small>(the real machine returns an actual track)</small></div>';
+  if (category === 'asset_3d') return '<div style="font-size:14px">🧊 3D model preview (GLB)<br><small>(the real machine returns a downloadable .glb)</small></div>';
+  return '🖼️';
+}
+
+/* ---- live dispense ---- */
+async function liveDispense(tx, desc, cat) {
   try {
+    setStep('verify');
+    $('window').textContent = '🔍 Verifying payment on-chain…';
     const body = { tx_hash: tx };
-    if (tier === 'directed') body.description = desc;
+    if (tier === 'directed') { if (desc) body.description = desc; if (cat) body.category = cat; }
     const res = await fetch(BACKEND_URL + '/gumball/dispense', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'machine error');
-    $('window').textContent = '✨ ' + CATEGORY_EMOJI[data.spec.category] + ' It pops out a ' + CATEGORY_NAME[data.spec.category] + '!';
-    const asset = data.asset;
-    if (asset && asset.url) {
-      if (asset.mime.startsWith('image/')) $('assetBox').innerHTML = '<img src="' + asset.url + '" alt="gumball">';
-      else if (asset.mime.startsWith('audio/')) $('assetBox').innerHTML = '<audio controls src="' + asset.url + '"></audio>';
-      else if (asset.mime.includes('glb') || asset.url.endsWith('.glb')) $('assetBox').innerHTML = '<a href="' + asset.url + '" target="_blank" rel="noopener" class="btn">⬇️ Download GLB</a>';
-      else $('assetBox').textContent = '⬇️ ' + asset.url;
+    const data = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+      showError(data.error || 'The machine jammed', data.help || 'Retry with the same tx hash.');
+      $('window').textContent = '😿 The machine jammed. Same tx hash = same draw, so retrying is safe!';
+      clearSteps();
+      return;
     }
-    $('revealText').innerHTML = '<b>' + CATEGORY_NAME[data.spec.category] + '</b> · ' + data.spec.prompt +
-      '<br><small>license ' + (asset ? asset.license : '?') + ' · receipt ' + data.id + '</small>';
-    $('receipt').style.display = 'block';
+
+    lastReceipt = data;
+    setStep('draw');
+    $('window').textContent = '🎲 Drawing from your tx hash…';
+    await new Promise(r => setTimeout(r, 600));
+    setStep('gen');
+    $('window').textContent = '✨ Generating ' + CATEGORY_NAME[data.spec.category] + '… '
+      + (CATEGORY_WAIT[data.spec.category] || '') + ' ⏳';
+
+    const asset = data.asset || {};
+    if (asset.url) {
+      if (asset.mime && asset.mime.startsWith('image/')) {
+        $('assetBox').innerHTML = '<img src="' + asset.url + '" alt="your gumball">';
+      } else if (asset.mime && asset.mime.startsWith('audio/')) {
+        $('assetBox').innerHTML = '<audio controls src="' + asset.url + '"></audio>';
+      } else if (asset.url.endsWith('.glb')) {
+        $('assetBox').innerHTML = '<div style="font-size:14px">🧊 3D model ready</div>'
+          + '<a class="btn dl" href="' + asset.url + '" download>⬇️ Download GLB</a>';
+      } else {
+        $('assetBox').innerHTML = '<a class="btn dl" href="' + asset.url + '" target="_blank" rel="noopener">⬇️ Download asset</a>';
+      }
+    } else {
+      $('assetBox').textContent = '🎁';
+    }
+
+    const lic = asset.license || '?';
+    $('revealText').innerHTML =
+      '<b>' + CATEGORY_EMOJI[data.spec.category] + ' ' + CATEGORY_NAME[data.spec.category] + '</b>'
+      + ' · ' + (data.spec.prompt || '')
+      + '<br><span class="license">' + lic + '</span>'
+      + ' <small>receipt <b>' + data.id + '</b> · model ' + (asset.model || '?') + '</small>';
+
     $('receipt').textContent = JSON.stringify(data, null, 2);
-    $('status').textContent = '🎉 Gumball dispensed! Receipt is replayable: scripts/verify_fairness.py';
+    setStep('done');
+    $('window').textContent = '🎁 Gumball dispensed! Keep your tx hash — it\u2019s your receipt ticket.';
+    $('reveal').classList.add('show');
+    $('status').textContent = '🎉 Dispensed! Verify it below, or replay it anytime with scripts/verify_fairness.py';
   } catch (e) {
-    $('status').textContent = '💥 ' + e.message;
-    $('window').textContent = '😿 The machine jammed. Try again (same tx = same draw, that\u2019s fair!).';
+    showError('Network error', 'Could not reach the machine: ' + e.message);
+    $('window').textContent = '😿 Connection lost — try again in a moment.';
+    clearSteps();
   }
 }
 
+/* ---- receipt actions ---- */
+$('btnReceipt').addEventListener('click', () => $('receipt').classList.toggle('show'));
+$('btnCopy').addEventListener('click', () => {
+  if (lastReceipt) copyText(JSON.stringify(lastReceipt, null, 2), 'Receipt copied!');
+});
+$('btnVerify').addEventListener('click', async () => {
+  const note = $('verifyNote');
+  note.classList.add('show');
+  note.textContent = '🔎 Replaying the receipt\u2019s spec from its tx hash…';
+  note.className = 'verify-note show';
+  try {
+    const res = await fetch(BACKEND_URL + '/gumball/verify/' + lastReceipt.id);
+    const v = await res.json();
+    note.classList.toggle('ok', v.verified);
+    note.classList.toggle('bad', !v.verified);
+    note.textContent = v.verified
+      ? '✅ VERIFIED — this gumball\u2019s category, prompt and seed are a pure function of its tx hash. No rigging possible.'
+      : '❌ MISMATCH: ' + (v.problems || []).join('; ');
+  } catch (e) {
+    note.textContent = 'Verification endpoint unreachable: ' + e.message;
+  }
+});
+
 /* ---- wiring ---- */
-$('tierBlind').addEventListener('click', () => setTier('blind'));
-$('tierDirected').addEventListener('click', () => setTier('directed'));
 function setTier(t) {
   tier = t;
   $('tierBlind').classList.toggle('active', t === 'blind');
   $('tierDirected').classList.toggle('active', t === 'directed');
-  $('descRow').style.display = t === 'directed' ? 'flex' : 'none';
+  $('tierBlind').setAttribute('aria-pressed', t === 'blind');
+  $('tierDirected').setAttribute('aria-pressed', t === 'directed');
+  $('descRow').style.display = t === 'directed' ? 'block' : 'none';
+  if (t === 'directed') $('helpPrice').textContent = (machineInfo ? machineInfo.tiers.directed.doge : 5);
+  else $('helpPrice').textContent = (machineInfo ? machineInfo.tiers.blind.doge : 1);
 }
+$('tierBlind').addEventListener('click', () => setTier('blind'));
+$('tierDirected').addEventListener('click', () => setTier('directed'));
+$('tierBlind').addEventListener('keydown', e => { if (e.key === 'Enter') setTier('blind'); });
+$('tierDirected').addEventListener('keydown', e => { if (e.key === 'Enter') setTier('directed'); });
 $('go').addEventListener('click', pullLever);
 $('lever').addEventListener('click', pullLever);
 
-if (BACKEND_URL !== null) {
-  $('modeBadge').textContent = 'LIVE';
-  fetch(BACKEND_URL + '/gumball/machine').then(r => r.json()).then(m => {
-    $('hint').textContent = 'Live: send ' + m.tiers.blind_doge + ' DOGE (blind) or '
-      + m.tiers.directed_doge + ' DOGE (directed) to ' + m.address
-      + ', wait for a confirmation, then paste your tx hash here.';
-  }).catch(() => {
-    $('hint').textContent = 'Live mode — backend unreachable right now.';
-  });
-} else {
-  $('modeBadge').textContent = 'DEMO MODE';
-}
 scatterGumballs();
+loadMachineInfo();
 </script>
 </body>
 </html>
