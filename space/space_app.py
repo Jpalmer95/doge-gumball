@@ -199,12 +199,18 @@ async def get_asset(filename: str):
 
 
 # --- static frontend: serve index.html with BACKEND_URL='' (live mode) -----
+# The injection anchor is a unique marker in the JS; if it ever stops matching
+# we fail at startup rather than silently serving a demo-mode machine.
 _www = ROOT / "_www"
 _www.mkdir(exist_ok=True)
-_ui = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8").replace(
-    "const BACKEND_URL = null;", "const BACKEND_URL = '';"
-)
-(_www / "index.html").write_text(_ui, encoding="utf-8")
+_ui = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+_injected = _ui.replace("|| null; //SPACE_LIVE_INJECT", "|| ''; //SPACE_LIVE_INJECT")
+if "|| null; //SPACE_LIVE_INJECT" in _injected:
+    raise RuntimeError(
+        "frontend live-mode injection failed: SPACE_LIVE_INJECT marker missing "
+        "from frontend/index.html"
+    )
+(_www / "index.html").write_text(_injected, encoding="utf-8")
 app.mount("/", StaticFiles(directory=_www, html=True), name="frontend")
 
 if __name__ == "__main__":

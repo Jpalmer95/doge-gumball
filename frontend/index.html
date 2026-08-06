@@ -222,7 +222,7 @@
      mode on any copy with ?backend=https://space-url.
    ============================================================ */
 const params = new URLSearchParams(location.search);
-const BACKEND_URL = (params.get('backend') || '').replace(/\/+$/, '') || null;
+const BACKEND_URL = (params.get('backend') || '').replace(/\/+$/, '') || null; //SPACE_LIVE_INJECT
 
 const CATEGORY_EMOJI = { image: '🖼️', asset_3d: '🧊', song: '🎵', game_sfx: '🔊' };
 const CATEGORY_NAME = { image: 'Image', asset_3d: '3D Asset', song: 'Song', game_sfx: 'Game SFX' };
