@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>🐕🪙 DOGE Gumball Machine</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Ccircle%20cx='16'%20cy='18'%20r='11'%20fill='%23d98a2b'/%3E%3Cpath%20d='M8%2010%20L5%202%20L13%206%20z'%20fill='%23d98a2b'/%3E%3Cpath%20d='M24%2010%20L27%202%20L19%206%20z'%20fill='%23d98a2b'/%3E%3Cellipse%20cx='16'%20cy='21'%20rx='6'%20ry='5'%20fill='%23f7e7c8'/%3E%3Ccircle%20cx='16'%20cy='18.5'%20r='1.6'%20fill='%233a2410'/%3E%3Ccircle%20cx='12'%20cy='15'%20r='1.5'%20fill='%232b2b2b'/%3E%3Ccircle%20cx='20'%20cy='15'%20r='1.5'%20fill='%232b2b2b'/%3E%3C/svg%3E">
 <style>
   :root {
     --red: #e23c2e; --red-dark: #b02a1e; --cream: #fff6e5; --ink: #2b2b2b;
@@ -26,6 +27,8 @@
     border: 6px solid var(--red-dark); overflow: hidden; box-shadow: inset 0 -18px 30px rgba(0,0,0,.12), 0 10px 24px rgba(0,0,0,.25);
   }
   .gumball { position: absolute; border-radius: 50%; box-shadow: inset -4px -5px 0 rgba(0,0,0,.18), inset 4px 5px 0 rgba(255,255,255,.45); }
+  .shiba-mascot { position: absolute; top: -30px; right: -6px; width: 84px; height: 84px; z-index: 3; filter: drop-shadow(0 5px 8px rgba(0,0,0,.3)); animation: wiggle 7s ease-in-out infinite; }
+  @keyframes wiggle { 0%, 100% { transform: rotate(-2.5deg); } 50% { transform: rotate(2.5deg); } }
   .globe.shake { animation: shake .55s cubic-bezier(.36,.07,.19,.97) 3; }
   @keyframes shake {
     10%, 90% { transform: translateX(-3px) rotate(-1deg); }
@@ -114,6 +117,25 @@
 <div class="tagline">1 DOGE in the slot → a random image, 3D asset, song, or game SFX pops out. Fair. Verifiable. CC0.</div>
 
 <div class="machine">
+  <svg class="shiba-mascot" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Shiba Inu mascot">
+    <path d="M56 46 q12 -6 10 -16 q-1 -6 -9 -5" fill="none" stroke="#d98a2b" stroke-width="8" stroke-linecap="round"/>
+    <path d="M18 34 q0 16 10 22 q14 8 30 0 q8 -6 6 -16 q-4 -8 -14 -8 q-14 4 -32 2z" fill="#d98a2b"/>
+    <path d="M26 44 q6 10 16 10 q14 0 20 -8 q-8 8 -36 2z" fill="#f7e7c8"/>
+    <ellipse cx="24" cy="56" rx="6" ry="4" fill="#f7e7c8"/>
+    <ellipse cx="36" cy="57" rx="6" ry="4" fill="#f7e7c8"/>
+    <circle cx="30" cy="26" r="13" fill="#d98a2b"/>
+    <path d="M19 16 L14 5 L26 11 z" fill="#d98a2b"/>
+    <path d="M41 16 L46 5 L34 11 z" fill="#d98a2b"/>
+    <path d="M20 15 L16.5 8 L23 12 z" fill="#8a5c1e"/>
+    <path d="M40 15 L43.5 8 L37 12 z" fill="#8a5c1e"/>
+    <ellipse cx="30" cy="31" rx="7.5" ry="6" fill="#f7e7c8"/>
+    <ellipse cx="30" cy="28" rx="2.4" ry="1.8" fill="#3a2410"/>
+    <circle cx="23.5" cy="24" r="2" fill="#2b2b2b"/>
+    <circle cx="36.5" cy="24" r="2" fill="#2b2b2b"/>
+    <path d="M26 33 q4 3.5 8 0" fill="none" stroke="#3a2410" stroke-width="1.6" stroke-linecap="round"/>
+    <circle cx="20" cy="29" r="2" fill="#e8a05a" opacity=".8"/>
+    <circle cx="40" cy="29" r="2" fill="#e8a05a" opacity=".8"/>
+  </svg>
   <div class="cap"></div>
   <div class="globe" id="globe"></div>
   <div class="body">
