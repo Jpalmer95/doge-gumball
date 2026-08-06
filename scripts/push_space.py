@@ -55,7 +55,7 @@ def assemble(tmp: Path) -> None:
 
 
 def main() -> int:
-    from huggingface_hub import HfApi, create_repo, upload_folder
+    from huggingface_hub import HfApi, create_repo
 
     token = resolve_token()
     api = HfApi(token=token)
@@ -66,14 +66,26 @@ def main() -> int:
         space_hardware=SPACE_HARDWARE, token=token, exist_ok=True,
     )
 
-    print("[2/4] assembling + uploading files")
+    print("[2/4] uploading files (per-file, retryable)")
     with tempfile.TemporaryDirectory() as td:
         tmp = Path(td)
         assemble(tmp)
-        upload_folder(
-            repo_id=SPACE_REPO, repo_type="space", folder_path=str(tmp),
-            token=token, commit_message="deploy: doge-gumball machine backend (docker)",
-        )
+        files = sorted(str(p.relative_to(tmp)) for p in tmp.rglob("*") if p.is_file())
+        for rel in files:
+            for attempt in range(4):
+                try:
+                    api.upload_file(
+                        path_or_fileobj=str(tmp / rel), path_in_repo=rel,
+                        repo_id=SPACE_REPO, repo_type="space", token=token,
+                        commit_message=f"deploy: {rel}",
+                    )
+                    break
+                except Exception as e:
+                    if attempt == 3:
+                        print(f"❌ failed to upload {rel}: {e}")
+                        return 1
+                    time.sleep(5 * (attempt + 1))
+        print(f"      {len(files)} files uploaded")
 
     print("[3/4] setting secrets")
     api.add_space_secret(repo_id=SPACE_REPO, key="HF_TOKEN", value=token)
