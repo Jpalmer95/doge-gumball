@@ -27,6 +27,7 @@
 ## Operational rules
 
 * `DOGE_ADDRESS` is set via Space secret; never hardcode a private key.
+  Full CLI playbook for the dedicated Core wallet: `docs/operator-cli.md`.
 * Before mainnet: generate the address from a Dogecoin Core wallet, back up
   the wallet.dat offline, verify a testnet/1-DOGE tx end-to-end.
 * Watch `outputs/receipts.jsonl` growth; archive monthly and keep the archive
@@ -34,6 +35,18 @@
 * Run `scripts/assess_entry_price.py` weekly (see docs/cost-ledger.md) to
   decide whether the entry price still covers costs.
 * HF_TOKEN secret must be a read-only token scoped to the machine's needs.
+
+## CORS / frontend policy
+
+* The API allows cross-origin calls only from the GitHub Pages frontend
+  (`https://jpalmer95.github.io`). Same-origin calls from the Space's own
+  UI need no CORS.
+* `/gumball/machine` and `/gumball/verify/<id>` are intentionally public
+  (fairness requires anyone to audit); `/gumball/dispense` is public by
+  design too — the tx hash is the ticket — and is protected by the per-IP
+  rate limit and the serialized generation queue.
+* The UI never receives or displays secrets; machine info deliberately
+  omits configuration internals (see `app/api_helpers.machine_info`).
 
 ## Known non-goals (v1)
 

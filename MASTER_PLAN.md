@@ -41,9 +41,15 @@ it.
   `/gumball/*` API live, fake txs rejected on-chain (payment verification
   active), per-IP rate limit + serialized generation queue.
 * **Frontend deployed:** https://jpalmer95.github.io/doge-gumball/ (gh-pages).
+* **Polish pass (2026-08-06):** UX overhaul — step indicator, category picker
+  for directed draws, copy buttons, on-chain payment guidance, in-UI fairness
+  verification (`GET /gumball/verify/<id>`), friendly error help for every
+  failure mode; CORS for the Pages frontend; `GET /gumball/health`;
+  `app/api_helpers` (offline-tested) + `app/verification` (replay shared by
+  CLI and API). **30 offline tests pass.**
 * **Not done:** real DOGE address (operator must create wallet + set the
-  Space secret), public receipts archive, weekly cost assessor cron,
-  production abuse monitoring.
+  Space secret — see `docs/operator-cli.md`), public receipts archive, weekly
+  cost assessor cron, production abuse monitoring.
 
 ---
 

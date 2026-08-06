@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Replay a receipt and verify the machine's fairness.
+"""Replay receipts and verify the machine's fairness (CLI).
 
 Every gumball's category, prompt, and model seed must be a pure function of
 its tx hash (and the description/category the user paid for). This script
@@ -16,32 +16,7 @@ import sys
 sys.path.insert(0, ".")
 
 from app import randomness  # noqa: E402
-
-
-def verify_receipt(receipt: dict) -> tuple[bool, list[str]]:
-    spec = receipt["spec"]
-    problems = []
-    try:
-        replay = randomness.draw(
-            spec["tx_hash"],
-            description=spec.get("description"),
-            category_hint=spec.get("category_hint"),
-            rng_version=spec["rng_version"],
-            pools_version=spec["pools_version"],
-        )
-    except Exception as e:
-        return False, [f"replay crashed: {e}"]
-
-    # The full spec must be byte-for-byte reproducible from the recorded
-    # inputs (tx hash + user description + category hint + versions).
-    problems = []
-    for field in ("category", "prompt", "model_seed", "rng_version",
-                  "pools_version", "description", "category_hint"):
-        if replay[field] != spec.get(field):
-            problems.append(f"{field}: receipt={spec.get(field)!r} replay={replay[field]!r}")
-    if receipt["spec"]["tier"] != replay["tier"]:
-        problems.append(f"tier: receipt={receipt['spec']['tier']!r} replay={replay['tier']!r}")
-    return not problems, problems
+from app.verification import verify_receipt  # noqa: E402
 
 
 def main() -> int:

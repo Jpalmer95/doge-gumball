@@ -65,14 +65,24 @@ python3 -m pytest tests/ -q
 ## Repo layout
 
 ```
-app/                 core: config, randomness (fairness), payments, ledger, machine
+app/                 core: config, randomness (fairness), payments, ledger, machine,
+                     api_helpers (friendly API), verification (receipt replay)
 app/generators/      image_flux, asset_3d_trellis, song_acestep, game_sfx (procedural)
-docs/                fairness spec, license audit, security model, cost policy
-scripts/             demo, fairness verification, entry-price assessor
-frontend/            cartoon gumball machine UI (GitHub Pages / Space embed)
-tests/               24 offline tests
+space/               HF Space: space_app.py (FastAPI), Dockerfile, README frontmatter
+docs/                fairness spec, license audit, security model, cost policy,
+                     operator-cli.md (Dogecoin Core CLI playbook)
+scripts/             demo, fairness verification, entry-price assessor, Space deploy
+frontend/            cartoon gumball machine UI (GitHub Pages / Space)
+tests/               30 offline tests
 MASTER_PLAN.md       the durable build/deploy roadmap
 ```
+
+## Operator: wiring up the wallet (exact CLI commands)
+
+See `docs/operator-cli.md` — it walks through creating the dedicated
+`doge-gumball` wallet in Dogecoin Core via CLI, generating the receiving
+address, setting the `DOGE_ADDRESS` Space secret, and sending a real test
+payment.
 
 ## Roadmap status
 

@@ -8,7 +8,7 @@ sys.path.insert(0, ".")
 
 from app import config, ledger, machine, payments
 from app.generators.game_sfx import SfxGenerator
-from scripts.verify_fairness import verify_receipt
+from app.verification import verify_receipt
 
 TX = "cd" * 32
 
