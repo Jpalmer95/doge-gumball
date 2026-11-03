@@ -5,7 +5,7 @@ Everything the web layer needs to build friendly responses lives here:
 machine info, category metadata, request validation, and payment-error
 mapping with human guidance.
 """
-from . import config, ledger, payments
+from . import config, ledger, payments, randomness
 
 CATEGORY_META = {
     "image": {"emoji": "🖼️", "name": "Image", "blurb": "a one-of-a-kind picture",
@@ -106,6 +106,22 @@ def validate_dispense_body(body: dict | None) -> tuple[str, str | None, str | No
     if description or category:
         return tx_hash, description, category
     return tx_hash, None, None
+
+
+def preview_draw(body: dict | None) -> dict:
+    """Compute the deterministic gumball spec for a tx_hash without spending or generating.
+
+    Because fairness is a pure function of tx_hash, the UI can call this
+    immediately when the lever is pulled so the matching capsule color drops
+    into the chute while on-chain verification + GPU generation run.
+    """
+    tx_hash, description, category = validate_dispense_body(body)
+    spec = randomness.draw(tx_hash, description=description, category_hint=category)
+    meta = CATEGORY_META.get(spec["category"], {})
+    return {
+        "spec": spec,
+        "category_meta": meta,
+    }
 
 
 # ---------------------------------------------------------------------------

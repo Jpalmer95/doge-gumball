@@ -41,6 +41,15 @@ it.
   `/gumball/*` API live, fake txs rejected on-chain (payment verification
   active), per-IP rate limit + serialized generation queue.
 * **Frontend deployed:** https://jpalmer95.github.io/doge-gumball/ (gh-pages).
+* **Capsule Arcade overhaul (2026-11-03):** frontend rebuilt as a tactile
+  gachapon station — dark arcade stage, Shiba Inu (Doge) mascot SVG perched on
+  the globe, gravity-packed two-tone capsules colour-coded by category
+  (image amber / 3D cyan / song magenta / SFX mint), brass rotary crank with
+  WebAudio ratchet, dispenser chute + click-to-crack capsule unboxing, colour
+  capsule dropping *before* generation via `POST /gumball/preview` so the
+  15s–100s wait is part of the ritual, `<model-viewer>` 3D turntable for GLBs,
+  analyser waveform player for audio, receipt/verify actions, and a
+  localStorage capsule shelf. Demo mode draws locally and labels itself.
 * **Polish pass (2026-08-06):** UX overhaul — step indicator, category picker
   for directed draws, copy buttons, on-chain payment guidance, in-UI fairness
   verification (`GET /gumball/verify/<id>`), friendly error help for every
@@ -161,6 +170,7 @@ end-to-end, with a real DOGE address.
 | 2026-08-06 | 3D chain requires `gradio_client.handle_file()` on every image input + `resolution` as string `'512'`; song requires `infer_step` as int. Raw paths / floats raise opaque server errors |
 | 2026-08-06 | Per user steer: 3D generations go through the trellis-image-to-3d skill workflow; the machine's semaphore + ZeroGPU serialization queue them; parallelization only if the cost model proves out (docs/cost-ledger.md) |
 | 2026-08-06 | House rules: no refunds (payments final on confirmation); overpayment beyond the 1/5 DOGE tiers = donation (machine never sends change). Posted in UI footer, `/gumball/machine` → `policy`, docs/fairness.md §6 |
+| 2026-11-03 | UI = "Capsule Arcade": dark stage, Shiba mascot, two-tone capsules colour-coded per category, click-to-crack unboxing. The capsule colour is revealed **before** generation by calling `/gumball/preview` (pure `f(tx_hash)`, no GPU), so the wait becomes part of the ritual while `/gumball/dispense` runs. Demo mode draws client-side with a mulberry32 seed from the tx hash and is labelled "demo" everywhere |
 
 ---
 

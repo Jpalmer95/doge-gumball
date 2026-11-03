@@ -3,6 +3,7 @@
 Serves the cartoon UI (frontend/index.html, served with BACKEND_URL='') plus
 the machine API:
     GET  /gumball/machine            -> open status, address, tiers, categories
+    POST /gumball/preview            -> deterministic spec from tx_hash (no GPU wait)
     POST /gumball/dispense           -> {tx_hash, description?, category?} -> receipt
     GET  /gumball/receipt/<id>       -> a stored receipt
     GET  /gumball/verify/<id>        -> fairness replay of a receipt
@@ -108,6 +109,19 @@ async def get_health() -> JSONResponse:
 @app.get("/gumball/machine")
 async def get_machine() -> JSONResponse:
     return JSONResponse(api_helpers.machine_info(demo=DEMO))
+
+
+@app.post("/gumball/preview")
+async def post_preview(request: Request) -> JSONResponse:
+    """Fast deterministic spec preview from tx_hash (no GPU wait or ledger lock)."""
+    try:
+        body = await request.json()
+    except Exception:
+        return JSONResponse({"error": "body must be JSON"}, status_code=400)
+    try:
+        return JSONResponse(api_helpers.preview_draw(body))
+    except api_helpers.RequestError as e:
+        return JSONResponse({"error": e.message, "help": e.help}, status_code=e.status)
 
 
 @app.post("/gumball/dispense")

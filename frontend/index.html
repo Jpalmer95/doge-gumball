@@ -3,527 +3,1727 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>🐕🪙 DOGE Gumball Machine</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Ccircle%20cx='16'%20cy='18'%20r='11'%20fill='%23d98a2b'/%3E%3Cpath%20d='M8%2010%20L5%202%20L13%206%20z'%20fill='%23d98a2b'/%3E%3Cpath%20d='M24%2010%20L27%202%20L19%206%20z'%20fill='%23d98a2b'/%3E%3Cellipse%20cx='16'%20cy='21'%20rx='6'%20ry='5'%20fill='%23f7e7c8'/%3E%3Ccircle%20cx='16'%20cy='18.5'%20r='1.6'%20fill='%233a2410'/%3E%3Ccircle%20cx='12'%20cy='15'%20r='1.5'%20fill='%232b2b2b'/%3E%3Ccircle%20cx='20'%20cy='15'%20r='1.5'%20fill='%232b2b2b'/%3E%3C/svg%3E">
+<title>DOGE Gumball Machine — Capsule Arcade</title>
+<meta name="description" content="Send 1 DOGE, get a provably-fair CC0 gumball: an image, a 3D asset, a song, or a game sound effect.">
+<meta name="theme-color" content="#12141d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Cellipse%20cx='32'%20cy='34'%20rx='16.5'%20ry='14.5'%20fill='%23e0a75c'/%3E%3Cpath%20d='M18.5%2023%20L13.5%205.5%20L31%2016.5%20Z'%20fill='%23e0a75c'/%3E%3Cpath%20d='M45.5%2023%20L50.5%205.5%20L33%2016.5%20Z'%20fill='%23e0a75c'/%3E%3Cellipse%20cx='32'%20cy='41'%20rx='11'%20ry='8'%20fill='%23fdf1dd'/%3E%3Cellipse%20cx='32'%20cy='35.8'%20rx='3.3'%20ry='2.5'%20fill='%232b2118'/%3E%3Ccircle%20cx='25'%20cy='29.6'%20r='2.3'%20fill='%232b2118'/%3E%3Ccircle%20cx='39'%20cy='29.6'%20r='2.3'%20fill='%232b2118'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --red: #e23c2e; --red-dark: #b02a1e; --cream: #fff6e5; --ink: #2b2b2b;
-    --glass: rgba(255,255,255,.35); --gold: #f6b93b; --sky: #8ed1fc; --green: #6fcf6f;
+    --bg-0: #0d0f16;
+    --line: rgba(255, 255, 255, .10);
+    --line-strong: rgba(255, 255, 255, .18);
+    --ink: #f2f3f7;
+    --ink-dim: rgba(242, 243, 247, .66);
+    --ink-faint: rgba(242, 243, 247, .42);
+    --gold: #f6b93b;
+    --gold-deep: #b87b0d;
+    --red: #ef5b4c;
+    --img: #f59e0b;
+    --c3d: #38bdf8;
+    --song: #e879f9;
+    --sfx: #34d399;
+    --r-lg: 18px;
+    --r-md: 13px;
+    --r-sm: 9px;
+    --font-ui: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-display: 'Fredoka', 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
   }
-  * { box-sizing: border-box; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; }
   body {
-    font-family: 'Comic Sans MS', 'Chalkboard SE', 'Marker Felt', system-ui, sans-serif;
-    background: linear-gradient(180deg, #8ed1fc 0%, #cdefff 55%, #a8e6a1 55%, #7cc576 100%);
-    min-height: 100vh; display: flex; flex-direction: column; align-items: center;
-    padding: 20px 12px 40px; color: var(--ink);
+    font-family: var(--font-ui);
+    color: var(--ink);
+    background:
+      radial-gradient(1100px 620px at 22% -8%, rgba(246, 185, 59, .10), transparent 62%),
+      radial-gradient(900px 520px at 88% 8%, rgba(56, 189, 248, .09), transparent 60%),
+      radial-gradient(760px 700px at 50% 120%, rgba(232, 121, 249, .07), transparent 65%),
+      linear-gradient(180deg, var(--bg-0) 0%, #10131d 45%, #0b0d13 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 26px 16px 44px; line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
   }
-  h1 { font-size: clamp(26px, 5vw, 44px); color: #fff; text-shadow: 3px 3px 0 rgba(0,0,0,.25); margin-bottom: 4px; text-align: center; }
-  .tagline { color: #fff; text-shadow: 1px 2px 0 rgba(0,0,0,.3); font-size: clamp(13px, 2.5vw, 17px); margin-bottom: 16px; text-align: center; }
+  body::before {
+    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, .055) 1px, transparent 1px);
+    background-size: 22px 22px;
+    -webkit-mask-image: radial-gradient(circle at 50% 28%, #000 18%, transparent 76%);
+    mask-image: radial-gradient(circle at 50% 28%, #000 18%, transparent 76%);
+  }
+  .shell { width: min(1060px, 100%); position: relative; z-index: 1; }
 
-  .machine { position: relative; width: min(420px, 92vw); }
+  /* ---------- header ---------- */
+  .topbar { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 4px; }
+  .mark {
+    width: 46px; height: 46px; border-radius: 13px; flex: none; display: grid; place-items: center;
+    background: linear-gradient(160deg, #2a2f42, #1a1e2c);
+    border: 1px solid var(--line-strong);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .38), inset 0 1px 0 rgba(255, 255, 255, .10);
+  }
+  .mark svg { width: 33px; height: 33px; display: block; }
+  .wordmark h1 {
+    font-family: var(--font-display); font-size: clamp(21px, 3.4vw, 27px);
+    font-weight: 700; letter-spacing: -.2px; line-height: 1.15;
+  }
+  .wordmark h1 span { color: var(--gold); }
+  .wordmark p { font-size: 12.5px; color: var(--ink-dim); margin-top: 2px; }
+  .spacer { flex: 1 1 20px; }
+  .badges { display: flex; gap: 7px; align-items: center; flex-wrap: wrap; }
+  .badge {
+    font-family: var(--font-mono); font-size: 10.5px; font-weight: 700;
+    letter-spacing: .5px; text-transform: uppercase; padding: 6px 10px; border-radius: 999px;
+    white-space: nowrap; background: rgba(255, 255, 255, .06);
+    border: 1px solid var(--line); color: var(--ink-dim);
+  }
+  .badge.live { background: rgba(52, 211, 153, .13); border-color: rgba(52, 211, 153, .42); color: #6ee7b7; }
+  .badge.closed { background: rgba(246, 185, 59, .12); border-color: rgba(246, 185, 59, .40); color: #ffd479; }
+  .badge.demo { background: rgba(56, 189, 248, .12); border-color: rgba(56, 189, 248, .40); color: #7dd3fc; }
+
+  /* ---------- layout ---------- */
+  .arcade {
+    display: grid; grid-template-columns: 348px minmax(0, 1fr);
+    gap: 18px; align-items: start; margin-top: 18px;
+  }
+  .col { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+
+  .card {
+    background: linear-gradient(180deg, rgba(255, 255, 255, .052), rgba(255, 255, 255, .022));
+    border: 1px solid var(--line); border-radius: var(--r-lg); padding: 16px; min-width: 0;
+    box-shadow: 0 14px 34px -18px rgba(0, 0, 0, .8), inset 0 1px 0 rgba(255, 255, 255, .06);
+  }
+  .card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+  .card-head h2 { font-family: var(--font-display); font-size: 15px; font-weight: 600; letter-spacing: .2px; }
+  .card-head .note { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: .6px; }
+  .eyebrow {
+    font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 1.1px;
+    text-transform: uppercase; color: var(--ink-faint); margin-bottom: 8px; display: block;
+  }
+
+  /* ---------- machine ---------- */
+  .cabinet {
+    position: relative; display: flex; flex-direction: column; align-items: center;
+    padding: 26px 18px 0; overflow: hidden;
+    background:
+      radial-gradient(120% 80% at 50% 0%, rgba(255, 255, 255, .07), transparent 60%),
+      linear-gradient(180deg, #202435 0%, #171a26 60%, #12141d 100%);
+    border: 1px solid var(--line); border-radius: var(--r-lg);
+    box-shadow: 0 18px 42px -20px rgba(0, 0, 0, .9), inset 0 1px 0 rgba(255, 255, 255, .08);
+  }
+  .cabinet::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 120px; pointer-events: none;
+    background: radial-gradient(60% 100% at 50% 100%, rgba(0, 0, 0, .55), transparent 70%);
+  }
+  .cab-top {
+    width: 112px; height: 20px; border-radius: 11px 11px 3px 3px; position: relative; z-index: 4;
+    background: linear-gradient(90deg, #8f2016 0%, #d13a2c 40%, #f46553 50%, #c02f22 72%, #801910 100%);
+    border: 2px solid #5f1009; box-shadow: 0 5px 12px rgba(0, 0, 0, .45);
+  }
+  .cab-top::before {
+    content: ''; position: absolute; top: -9px; left: 50%; transform: translateX(-50%);
+    width: 17px; height: 11px; border-radius: 8px 8px 2px 2px;
+    background: linear-gradient(150deg, #ffe6a3, #cf8f17); border: 2px solid #6f4703;
+  }
+  .globe-wrap {
+    width: 232px; margin: 0 auto; position: relative; z-index: 3; margin-top: -3px;
+  }
   .globe {
-    position: relative; height: 240px; border-radius: 50% 50% 44% 44% / 58% 58% 38% 38%;
-    background: radial-gradient(circle at 32% 28%, #ffffffcc 0%, var(--glass) 34%, #b9e6fb 72%, #9ad8f7 100%);
-    border: 6px solid var(--red-dark); overflow: hidden; box-shadow: inset 0 -18px 30px rgba(0,0,0,.12), 0 10px 24px rgba(0,0,0,.25);
+    width: 232px; height: 200px; position: relative;
+    border-radius: 50% 50% 45% 45% / 56% 56% 40% 40%;
+    background:
+      radial-gradient(circle at 30% 22%, rgba(255, 255, 255, .38) 0%, rgba(255, 255, 255, .07) 26%, transparent 50%),
+      radial-gradient(circle at 52% 66%, rgba(140, 205, 255, .10) 0%, rgba(9, 12, 20, .62) 100%);
+    border: 3px solid rgba(255, 255, 255, .26);
+    box-shadow:
+      inset -14px -18px 30px rgba(0, 0, 0, .48),
+      inset 12px 10px 24px rgba(255, 255, 255, .16),
+      0 14px 30px rgba(0, 0, 0, .45);
+    overflow: hidden;
   }
-  .gumball { position: absolute; border-radius: 50%; box-shadow: inset -4px -5px 0 rgba(0,0,0,.18), inset 4px 5px 0 rgba(255,255,255,.45); }
-  .shiba-mascot { position: absolute; top: -30px; right: -6px; width: 84px; height: 84px; z-index: 3; filter: drop-shadow(0 5px 8px rgba(0,0,0,.3)); animation: wiggle 7s ease-in-out infinite; }
-  @keyframes wiggle { 0%, 100% { transform: rotate(-2.5deg); } 50% { transform: rotate(2.5deg); } }
-  .globe.shake { animation: shake .55s cubic-bezier(.36,.07,.19,.97) 3; }
-  @keyframes shake {
-    10%, 90% { transform: translateX(-3px) rotate(-1deg); }
-    20%, 80% { transform: translateX(4px) rotate(1deg); }
-    30%, 50%, 70% { transform: translateX(-6px) rotate(-2deg); }
-    40%, 60% { transform: translateX(6px) rotate(2deg); }
+  .globe::after {
+    content: ''; position: absolute; top: 12px; left: 16px; width: 44px; height: 96px;
+    border-radius: 50%; transform: rotate(-17deg); pointer-events: none;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .46), rgba(255, 255, 255, 0));
   }
-  .cap { width: 34%; height: 26px; background: var(--red); border: 4px solid var(--red-dark); border-radius: 8px 8px 0 0; margin: 0 auto; position: relative; top: 4px; }
-  .cap::after { content: ''; position: absolute; left: 50%; top: -12px; transform: translateX(-50%); width: 14px; height: 14px; border-radius: 50%; background: var(--gold); border: 2px solid var(--red-dark); }
-  .body { background: linear-gradient(180deg, var(--red) 0%, #c93427 60%, var(--red-dark) 100%); border: 6px solid var(--red-dark); border-top: none; border-radius: 0 0 22px 22px; padding: 12px 18px 18px; }
-  .slot { width: 70px; height: 16px; background: #222; border-radius: 6px; margin: 0 auto 6px; box-shadow: inset 0 3px 5px #0008; }
-  .slot-label { text-align: center; color: #ffe9b3; font-size: 12px; letter-spacing: 1px; margin-bottom: 8px; }
-  .glass-door { background: #fff3; border: 3px solid var(--red-dark); border-radius: 10px; padding: 10px 12px; min-height: 58px; text-align: center; color: #5a1d16; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; }
-  .controls { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; gap: 10px; }
-  .lever { width: 62px; height: 62px; background: radial-gradient(circle at 34% 30%, #ffe08a, var(--gold) 60%, #d99a1b); border: 4px solid #8a5c08; border-radius: 50%; font-size: 26px; cursor: pointer; transition: transform .12s; box-shadow: 0 4px 0 #8a5c08; }
-  .lever:active { transform: translateY(3px); box-shadow: 0 1px 0 #8a5c08; }
-  .lever:disabled { opacity: .45; cursor: not-allowed; }
-  .brand { color: #ffe9b3; font-size: 15px; text-align: right; line-height: 1.35; }
-  .brand b { font-size: 19px; display: block; }
-
-  .panel { background: var(--cream); border: 4px solid var(--ink); border-radius: 18px; box-shadow: 6px 6px 0 rgba(0,0,0,.18); padding: 18px; width: min(560px, 94vw); margin-top: 20px; }
-  .panel h2 { font-size: 18px; margin-bottom: 10px; }
-  .badge { display: inline-block; background: #fff3; border: 2px solid var(--ink); border-radius: 20px; padding: 2px 10px; font-size: 11px; margin-left: 6px; vertical-align: middle; }
-  .badge.open { background: var(--green); }
-  .badge.closed { background: var(--gold); }
-
-  .tiers { display: flex; gap: 10px; margin-bottom: 12px; }
-  .tier { flex: 1; border: 3px solid var(--ink); border-radius: 12px; padding: 10px; text-align: center; background: #fff; cursor: pointer; }
-  .tier.active { background: var(--gold); box-shadow: inset 0 0 0 3px #fff; }
-  .tier .price { font-size: 22px; font-weight: bold; }
-  .tier .what { font-size: 12px; }
-  .row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
-  input[type=text], textarea, select {
-    flex: 1; min-width: 0; border: 3px solid var(--ink); border-radius: 10px; padding: 10px 12px;
-    font: inherit; background: #fff;
+  .cap-ball {
+    position: absolute; width: 30px; height: 30px; border-radius: 50%; overflow: hidden;
+    border: 1.5px solid rgba(255, 255, 255, .38);
+    box-shadow: inset -3px -4px 7px rgba(0, 0, 0, .45), 0 3px 7px rgba(0, 0, 0, .38);
+    transition: transform .5s cubic-bezier(.34, 1.4, .64, 1);
+    will-change: transform;
   }
-  textarea { resize: vertical; min-height: 60px; }
-  label.small { font-size: 12px; font-weight: bold; display: block; margin-bottom: 3px; }
-  .btn { border: 3px solid var(--ink); border-radius: 12px; padding: 10px 16px; font: inherit; font-weight: bold; background: var(--gold); cursor: pointer; box-shadow: 3px 3px 0 rgba(0,0,0,.2); }
-  .btn:disabled { opacity: .5; cursor: not-allowed; }
-  .btn.green { background: var(--green); }
-  .btn.ghost { background: #fff; box-shadow: none; }
-  .hint { font-size: 12px; color: #555; margin-bottom: 10px; }
-  .addr-box { font-family: ui-monospace, Menlo, monospace; font-size: 12px; background: #fff; border: 2px solid var(--ink); border-radius: 10px; padding: 8px 10px; word-break: break-all; margin: 6px 0 10px; display: none; }
-  .addr-box .copy { float: right; cursor: pointer; font-size: 11px; border: 1px solid var(--ink); border-radius: 6px; padding: 1px 6px; background: var(--gold); }
+  .cap-ball::before {
+    content: ''; position: absolute; inset: 0 0 50% 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .78), rgba(255, 255, 255, .30));
+    border-bottom: 2px solid rgba(0, 0, 0, .26);
+  }
+  .cap-ball::after {
+    content: ''; position: absolute; top: 4px; left: 7px; width: 8px; height: 5px;
+    border-radius: 50%; background: rgba(255, 255, 255, .9); transform: rotate(-20deg);
+  }
+  .mascot {
+    position: absolute; top: -40px; right: -18px; width: 76px; height: 76px; z-index: 6;
+    filter: drop-shadow(0 7px 10px rgba(0, 0, 0, .45));
+    animation: perch 6.5s ease-in-out infinite; transform-origin: 50% 92%;
+  }
+  @keyframes perch { 0%, 100% { transform: rotate(-3deg) translateY(0); } 50% { transform: rotate(3deg) translateY(-2px); } }
 
-  .steps { display: none; gap: 6px; margin: 10px 0; font-size: 12px; flex-wrap: wrap; }
-  .steps.show { display: flex; }
-  .step { flex: 1; min-width: 90px; text-align: center; border: 2px solid var(--ink); border-radius: 10px; padding: 6px 4px; background: #fff; opacity: .55; }
-  .step.done { opacity: 1; background: var(--green); }
-  .step.active { opacity: 1; background: var(--gold); animation: pulse 1s infinite; }
-  @keyframes pulse { 50% { transform: scale(1.04); } }
+  .cab-body {
+    width: 246px; margin-top: -10px; z-index: 4; position: relative;
+    background: linear-gradient(90deg, #8f2016 0%, #cf382a 26%, #ec4d3d 46%, #b62c20 80%, #7c1a11 100%);
+    border: 2px solid #5a0f08; border-radius: 9px 9px 20px 20px; padding: 13px 14px 14px;
+    box-shadow: 0 14px 26px rgba(0, 0, 0, .5), inset 0 2px 0 rgba(255, 255, 255, .22);
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .plate {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    background: rgba(0, 0, 0, .26); border: 1px solid rgba(255, 255, 255, .14);
+    border-radius: 11px; padding: 9px 11px;
+  }
+  .coin-col { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 46px; }
+  .coin-slot {
+    width: 9px; height: 27px; border-radius: 4px; background: #0b0d14;
+    border: 1.5px solid var(--gold);
+    box-shadow: inset 0 2px 4px #000, 0 0 9px rgba(246, 185, 59, .34);
+  }
+  .coin-price { font-family: var(--font-mono); font-size: 9px; font-weight: 700; color: #ffe2a0; letter-spacing: .4px; }
+  .crank {
+    width: 62px; height: 62px; border-radius: 50%; flex: none; cursor: pointer;
+    background: radial-gradient(circle at 33% 29%, #fff3c4 0%, #f6b93b 46%, #a86c08 92%);
+    border: 3px solid #664103; display: grid; place-items: center;
+    box-shadow: 0 5px 0 #513502, 0 9px 18px rgba(0, 0, 0, .45);
+    transition: transform .7s cubic-bezier(.4, .05, .2, 1.15), box-shadow .12s, filter .15s;
+  }
+  .crank:hover:not(:disabled) { filter: brightness(1.08); }
+  .crank:active:not(:disabled) { box-shadow: 0 2px 0 #513502, 0 5px 11px rgba(0, 0, 0, .45); }
+  .crank:disabled { cursor: not-allowed; opacity: .55; }
+  .crank.turning { transform: rotate(720deg); }
+  .crank-bar {
+    width: 42px; height: 11px; border-radius: 6px;
+    background: linear-gradient(180deg, #fff6d8 0%, #cd8b12 100%);
+    border: 2px solid #664103; box-shadow: 0 2px 4px rgba(0, 0, 0, .4);
+  }
+  .cab-brand { text-align: right; font-family: var(--font-display); line-height: 1.1; color: #ffeccb; }
+  .cab-brand b { display: block; font-size: 15px; letter-spacing: .4px; }
+  .cab-brand span { font-size: 8.5px; letter-spacing: 1.4px; opacity: .72; }
 
-  .status { font-size: 14px; min-height: 22px; margin-top: 8px; font-weight: bold; }
-  .error-box { display: none; border: 3px solid var(--red); background: #ffe9e6; border-radius: 12px; padding: 10px 12px; margin-top: 8px; font-size: 13px; }
-  .error-box.show { display: block; }
-  .error-box .help { margin-top: 4px; font-size: 12px; color: #7a2a20; }
+  .chute {
+    position: relative; height: 104px; border-radius: 11px; display: grid; place-items: center;
+    background: #0c0e15; border: 2px solid #4c0f09; overflow: hidden;
+    box-shadow: inset 0 7px 15px rgba(0, 0, 0, .8);
+  }
+  .chute-label {
+    position: absolute; top: 0; left: 0; right: 0; height: 18px; display: grid; place-items: center;
+    font-family: var(--font-mono); font-size: 8px; letter-spacing: 1.2px; color: rgba(255, 255, 255, .34);
+    background: linear-gradient(180deg, rgba(255, 255, 255, .09), rgba(255, 255, 255, .015));
+    border-bottom: 1px solid rgba(255, 255, 255, .10);
+  }
+  .chute-hint {
+    position: absolute; bottom: 4px; font-size: 10px; color: rgba(255, 255, 255, .45);
+    padding: 0 8px; text-align: center; pointer-events: none;
+  }
+  .tray-capsule {
+    width: 48px; height: 48px; position: relative; border-radius: 50%; margin-top: -2px;
+    cursor: pointer; opacity: 0; transform: translateY(-96px) scale(.55);
+    border: none; background: none; padding: 0;
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, .6));
+    transition: transform .5s cubic-bezier(.34, 1.5, .64, 1), opacity .22s;
+  }
+  .tray-capsule.landed { opacity: 1; transform: translateY(4px) scale(1); animation: capsuleBob 1.6s ease-in-out infinite; }
+  .tray-capsule.working { opacity: 1; transform: translateY(4px) scale(.95); animation: capsulePulse 1.5s ease-in-out infinite; }
+  .tray-capsule.jammed { animation: capsuleShake .5s ease-in-out 3; }
+  @keyframes capsuleBob { 0%, 100% { transform: translateY(4px) scale(1); } 50% { transform: translateY(-2px) scale(1.05); } }
+  @keyframes capsulePulse {
+    0%, 100% { transform: translateY(4px) scale(.94); filter: drop-shadow(0 0 6px currentColor); }
+    50% { transform: translateY(2px) scale(1); filter: drop-shadow(0 0 16px currentColor); }
+  }
+  @keyframes capsuleShake {
+    0%, 100% { transform: translateY(4px) rotate(0); }
+    25% { transform: translateY(4px) rotate(-9deg); }
+    75% { transform: translateY(4px) rotate(9deg); }
+  }
+  .cap-top, .cap-bottom {
+    position: absolute; left: 0; right: 0; height: 50%;
+    transition: transform .42s cubic-bezier(.22, 1, .36, 1), opacity .35s;
+  }
+  .cap-top {
+    top: 0; border-radius: 24px 24px 0 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, .88), rgba(255, 255, 255, .34));
+    border: 2px solid rgba(255, 255, 255, .62); border-bottom: 2px solid rgba(0, 0, 0, .32);
+  }
+  .cap-bottom {
+    bottom: 0; border-radius: 0 0 24px 24px;
+    border: 2px solid rgba(255, 255, 255, .5); border-top: none;
+  }
+  .tray-capsule.cracked .cap-top { transform: translateY(-26px) rotate(-28deg); opacity: 0; }
+  .tray-capsule.cracked .cap-bottom { transform: translateY(20px) rotate(20deg); opacity: 0; }
 
-  .reveal { display: none; text-align: center; margin-top: 12px; }
-  .reveal.show { display: block; animation: pop .5s cubic-bezier(.34,1.56,.64,1); }
-  @keyframes pop { 0% { transform: scale(.4); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-  .asset-box { width: 100%; min-height: 150px; border: 4px dashed var(--ink); border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 48px; background: #fff; margin: 10px 0; padding: 8px; }
-  .asset-box img, .asset-box audio { max-width: 100%; max-height: 240px; border-radius: 8px; }
-  .asset-box .dl { font-size: 14px; margin-top: 8px; }
-  .meta { font-size: 13px; margin-top: 6px; }
-  .license { display: inline-block; border: 2px solid var(--ink); border-radius: 20px; padding: 1px 10px; font-size: 11px; font-weight: bold; background: var(--green); margin: 4px 2px; }
-  .receipt { font-family: ui-monospace, Menlo, monospace; font-size: 11px; background: #111; color: #7CFC98; border-radius: 10px; padding: 10px; text-align: left; overflow-x: auto; white-space: pre-wrap; word-break: break-all; margin-top: 10px; display: none; max-height: 260px; overflow-y: auto; }
+  /* ---------- tiers ---------- */
+  .tiers { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+  .tier {
+    text-align: left; cursor: pointer; font: inherit; color: inherit; min-height: 78px;
+    background: rgba(255, 255, 255, .035); border: 1.5px solid var(--line);
+    border-radius: var(--r-md); padding: 11px 12px;
+    display: flex; flex-direction: column; gap: 3px;
+    transition: background .16s, border-color .16s, transform .16s;
+  }
+  .tier:hover { background: rgba(255, 255, 255, .06); transform: translateY(-1px); }
+  .tier[aria-pressed="true"] {
+    background: rgba(246, 185, 59, .11); border-color: rgba(246, 185, 59, .75);
+    box-shadow: inset 0 0 0 1px rgba(246, 185, 59, .18);
+  }
+  .tier-row { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+  .tier-price { font-family: var(--font-display); font-size: 19px; font-weight: 700; letter-spacing: -.3px; }
+  .tier-tag { font-family: var(--font-mono); font-size: 9px; letter-spacing: .5px; color: var(--ink-faint); }
+  .tier-sub { font-size: 11.5px; color: var(--ink-dim); line-height: 1.35; }
+
+  /* ---------- capsule taxonomy ---------- */
+  .taxonomy { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
+  .cat {
+    font: inherit; color: inherit; cursor: pointer; min-height: 62px; padding: 8px 4px;
+    background: rgba(255, 255, 255, .035); border: 1.5px solid var(--line);
+    border-radius: var(--r-sm);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+    transition: background .15s, border-color .15s, transform .15s;
+  }
+  .cat:hover { background: rgba(255, 255, 255, .065); transform: translateY(-1px); }
+  .cat[aria-pressed="true"] { background: rgba(246, 185, 59, .1); border-color: rgba(246, 185, 59, .7); }
+  .cat-dot {
+    width: 17px; height: 17px; border-radius: 50%; position: relative; overflow: hidden;
+    border: 1.5px solid rgba(255, 255, 255, .55);
+  }
+  .cat-dot::before { content: ''; position: absolute; inset: 0 0 50% 0; background: rgba(255, 255, 255, .62); }
+  .cat-name { font-size: 10px; font-weight: 600; color: var(--ink-dim); letter-spacing: .1px; }
+  .cat[aria-pressed="true"] .cat-name { color: var(--ink); }
+
+  /* ---------- inputs ---------- */
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: 10.5px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; color: var(--ink-faint); }
+  .input-wrap { position: relative; display: flex; align-items: center; }
+  input[type="text"], textarea {
+    width: 100%; font: inherit; font-size: 12.5px; color: var(--ink);
+    background: rgba(0, 0, 0, .30); border: 1.5px solid var(--line);
+    border-radius: var(--r-sm); padding: 10px 12px; outline: none;
+    transition: border-color .15s, background .15s;
+  }
+  textarea { resize: vertical; min-height: 56px; }
+  input[type="text"]::placeholder, textarea::placeholder { color: rgba(242, 243, 247, .33); }
+  input[type="text"]:focus, textarea:focus { border-color: rgba(246, 185, 59, .8); background: rgba(0, 0, 0, .42); }
+  input[type="text"]:disabled, textarea:disabled { opacity: .5; cursor: not-allowed; }
+  #tx { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .2px; padding-right: 64px; }
+  .hex-count {
+    position: absolute; right: 7px; font-family: var(--font-mono); font-size: 9.5px;
+    padding: 3px 6px; border-radius: 5px; color: var(--ink-faint);
+    background: rgba(255, 255, 255, .07); pointer-events: none;
+  }
+  .hex-count.ok { color: #6ee7b7; background: rgba(52, 211, 153, .16); }
+  .hint { font-size: 11px; color: var(--ink-faint); line-height: 1.45; }
+  .hint b { color: var(--ink-dim); font-weight: 600; }
+
+  /* ---------- action ---------- */
+  .action {
+    width: 100%; min-height: 46px; cursor: pointer;
+    font-family: var(--font-display); font-size: 16px; font-weight: 600; letter-spacing: .2px; color: #17130a;
+    background: linear-gradient(180deg, #ffdc79 0%, var(--gold) 100%);
+    border: none; border-radius: var(--r-md);
+    box-shadow: 0 4px 0 var(--gold-deep), 0 12px 24px -8px rgba(246, 185, 59, .5);
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: transform .12s, box-shadow .12s, filter .15s;
+  }
+  .action:hover:not(:disabled) { filter: brightness(1.05); transform: translateY(-1px); }
+  .action:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 var(--gold-deep); }
+  .action:disabled { cursor: not-allowed; opacity: .55; }
+
+  /* ---------- step rail ---------- */
+  .steps { display: flex; gap: 5px; }
+  .step {
+    flex: 1; text-align: center; font-family: var(--font-mono); font-size: 8.5px;
+    letter-spacing: .3px; text-transform: uppercase; padding: 6px 2px; border-radius: 6px;
+    background: rgba(255, 255, 255, .04); border: 1px solid var(--line); color: var(--ink-faint);
+    transition: background .25s, color .25s, border-color .25s;
+  }
+  .step.done { background: rgba(52, 211, 153, .14); border-color: rgba(52, 211, 153, .38); color: #7ce8bd; }
+  .step.active { background: rgba(246, 185, 59, .16); border-color: rgba(246, 185, 59, .55); color: #ffd479; }
+
+  .status { font-size: 12.5px; min-height: 19px; color: var(--ink-dim); }
+  .status b { color: var(--ink); }
+
+  /* ---------- pay / QR ---------- */
+  .paybox {
+    display: none; gap: 12px; align-items: center; margin-top: 12px;
+    background: rgba(0, 0, 0, .26); border: 1px solid var(--line);
+    border-radius: var(--r-md); padding: 11px;
+  }
+  .paybox.show { display: flex; }
+  .paybox .qr { width: 96px; height: 96px; flex: none; background: #fff; border-radius: 8px; padding: 4px; }
+  .paybox .qr img { width: 100%; height: 100%; display: block; }
+  .payinfo { min-width: 0; flex: 1; display: flex; flex-direction: column; gap: 6px; }
+  .payinfo .lbl { font-family: var(--font-mono); font-size: 9px; letter-spacing: .8px; text-transform: uppercase; color: var(--ink-faint); }
+  .addr {
+    font-family: var(--font-mono); font-size: 11px; word-break: break-all; color: var(--ink);
+    background: rgba(255, 255, 255, .05); border-radius: 6px; padding: 6px 8px; line-height: 1.4;
+  }
+  .mini-btn {
+    font: inherit; font-size: 11px; font-weight: 600; cursor: pointer; color: var(--ink);
+    background: rgba(255, 255, 255, .09); border: 1px solid var(--line-strong);
+    border-radius: 7px; padding: 6px 10px; min-height: 32px;
+    text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
+    transition: background .15s;
+  }
+  .mini-btn:hover { background: rgba(255, 255, 255, .16); }
+  .mini-btn.gold { background: rgba(246, 185, 59, .18); border-color: rgba(246, 185, 59, .5); color: #ffd479; }
+
+  /* ---------- catalogue ---------- */
+  .catalogue { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .catalogue li { display: flex; align-items: center; gap: 9px; }
+  .catalogue .dot {
+    width: 11px; height: 11px; border-radius: 50%; flex: none;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, .06);
+  }
+  .catalogue .cl { display: flex; flex-direction: column; line-height: 1.3; }
+  .catalogue b { font-size: 12px; font-weight: 600; }
+  .catalogue small { font-family: var(--font-mono); font-size: 9.5px; color: var(--ink-faint); }
+  .cat-note { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 10.5px; color: var(--ink-faint); line-height: 1.5; }
+  .cat-note b { color: var(--ink-dim); }
+
+  /* ---------- reveal ---------- */
+  .reveal-card {
+    background: linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .02));
+    border: 1px solid var(--line); border-radius: var(--r-lg);
+    padding: 15px; min-height: 168px;
+    display: flex; flex-direction: column; justify-content: center;
+    box-shadow: 0 14px 34px -18px rgba(0, 0, 0, .8), inset 0 1px 0 rgba(255, 255, 255, .06);
+  }
+  .reveal-empty { text-align: center; color: var(--ink-faint); font-size: 12px; line-height: 1.7; }
+  .reveal-empty b { color: var(--ink-dim); }
+
+  .prize { display: none; gap: 14px; align-items: flex-start; animation: prizeIn .45s cubic-bezier(.22, 1, .36, 1); }
+  .prize.show { display: flex; }
+  .prize.stack { flex-direction: column; align-items: stretch; }
+  @keyframes prizeIn { from { transform: scale(.95) translateY(9px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+  .asset-stage {
+    width: 132px; height: 132px; flex: none; border-radius: 12px; overflow: hidden;
+    background: #0a0c12; border: 1px solid var(--line-strong);
+    display: grid; place-items: center; position: relative;
+    box-shadow: inset 0 0 30px rgba(255, 255, 255, .05);
+  }
+  .prize.stack .asset-stage { width: 100%; height: 260px; }
+  .prize.stack .asset-stage.audio { height: auto; padding: 6px; }
+  .asset-stage img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .asset-stage model-viewer { width: 100%; height: 100%; background: transparent; }
+  .asset-stage .ph { font-size: 30px; opacity: .8; }
+
+  .prize-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+  .prize-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+  .tag {
+    font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; letter-spacing: .4px;
+    padding: 3px 7px; border-radius: 5px; text-transform: uppercase;
+    background: rgba(255, 255, 255, .08); color: var(--ink-dim); border: 1px solid var(--line);
+  }
+  .tag.cc0 { background: rgba(52, 211, 153, .15); color: #6ee7b7; border-color: rgba(52, 211, 153, .36); }
+  .tag.demo { background: rgba(56, 189, 248, .14); color: #7dd3fc; border-color: rgba(56, 189, 248, .35); }
+  .prize-title { font-family: var(--font-display); font-size: 16px; font-weight: 600; line-height: 1.3; }
+  .prize-meta { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); word-break: break-all; line-height: 1.5; }
+  .prize-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 3px; }
+
+  /* audio player */
+  .player {
+    display: flex; align-items: center; gap: 9px; width: 100%;
+    background: rgba(0, 0, 0, .32); border: 1px solid var(--line);
+    border-radius: 9px; padding: 7px 9px;
+  }
+  .player button {
+    width: 30px; height: 30px; flex: none; border-radius: 50%; cursor: pointer;
+    background: var(--gold); border: none; color: #17130a; font-size: 11px;
+    display: grid; place-items: center; transition: transform .12s;
+  }
+  .player button:hover { transform: scale(1.06); }
+  .player canvas { flex: 1; height: 26px; display: block; min-width: 0; }
+  .player .t { font-family: var(--font-mono); font-size: 9.5px; color: var(--ink-faint); flex: none; }
+
+  /* 3d demo cube */
+  .cube-wrap { perspective: 420px; width: 100%; height: 100%; display: grid; place-items: center; }
+  .cube { position: relative; width: 70px; height: 70px; transform-style: preserve-3d; animation: spin 7s linear infinite; }
+  .cube div {
+    position: absolute; width: 70px; height: 70px;
+    border: 1.5px solid rgba(255, 255, 255, .5);
+    background: rgba(56, 189, 248, .14);
+    box-shadow: inset 0 0 14px rgba(56, 189, 248, .35);
+  }
+  .cube .f1 { transform: translateZ(35px); }
+  .cube .f2 { transform: rotateY(180deg) translateZ(35px); }
+  .cube .f3 { transform: rotateY(90deg) translateZ(35px); }
+  .cube .f4 { transform: rotateY(-90deg) translateZ(35px); }
+  .cube .f5 { transform: rotateX(90deg) translateZ(35px); }
+  .cube .f6 { transform: rotateX(-90deg) translateZ(35px); }
+  @keyframes spin { from { transform: rotateX(-18deg) rotateY(0); } to { transform: rotateX(-18deg) rotateY(360deg); } }
+
+  /* ---------- errors ---------- */
+  .err {
+    display: none; margin-top: 10px;
+    background: rgba(239, 91, 76, .1); border: 1px solid rgba(239, 91, 76, .42);
+    border-radius: var(--r-md); padding: 11px 12px;
+  }
+  .err.show { display: block; }
+  .err b { font-size: 12.5px; color: #ffb4ac; display: block; margin-bottom: 3px; }
+  .err p { font-size: 11.5px; color: rgba(255, 200, 194, .78); line-height: 1.45; }
+
+  /* ---------- receipt ---------- */
+  .receipt {
+    display: none; margin-top: 10px; font-family: var(--font-mono); font-size: 10.5px;
+    background: rgba(0, 0, 0, .55); border: 1px solid var(--line); border-radius: 9px;
+    padding: 10px; color: #8ce6b6; white-space: pre-wrap; word-break: break-all;
+    max-height: 220px; overflow: auto; line-height: 1.5;
+  }
   .receipt.show { display: block; }
-  .verify-note { font-size: 12px; margin-top: 8px; padding: 8px; border: 2px dashed var(--ink); border-radius: 10px; background: #fff; display: none; }
+
+  .verify-note {
+    display: none; margin-top: 9px; font-size: 11.5px; line-height: 1.5;
+    border: 1px dashed var(--line-strong); border-radius: 9px; padding: 9px 10px;
+    color: var(--ink-dim); background: rgba(255, 255, 255, .03);
+  }
   .verify-note.show { display: block; }
-  .verify-note.ok { border-color: var(--green); }
-  .verify-note.bad { border-color: var(--red); background: #ffe9e6; }
+  .verify-note.ok { border-color: rgba(52, 211, 153, .55); background: rgba(52, 211, 153, .09); color: #9ff0cd; }
+  .verify-note.bad { border-color: rgba(239, 91, 76, .6); background: rgba(239, 91, 76, .1); color: #ffb4ac; }
 
-  details.help { margin-top: 12px; font-size: 13px; }
-  details.help summary { cursor: pointer; font-weight: bold; }
-  details.help ol { padding-left: 20px; margin-top: 6px; line-height: 1.7; }
-  details.help code { background: #eee; border-radius: 4px; padding: 0 4px; }
+  /* ---------- shelf ---------- */
+  .shelf { display: none; margin-top: 14px; }
+  .shelf.show { display: block; }
+  .shelf-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chip {
+    font: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255, 255, 255, .05); border: 1px solid var(--line);
+    border-radius: 999px; padding: 5px 10px 5px 7px; font-size: 10.5px; color: var(--ink-dim);
+    min-height: 30px; transition: background .15s, color .15s;
+  }
+  .chip:hover { background: rgba(255, 255, 255, .11); color: var(--ink); }
+  .chip i { width: 9px; height: 9px; border-radius: 50%; display: block; flex: none; }
 
-  .footer { margin-top: 24px; max-width: 620px; text-align: center; color: #fff; text-shadow: 1px 1px 0 rgba(0,0,0,.35); font-size: 12px; line-height: 1.6; }
-  .footer a { color: #fff; }
+  /* ---------- help + footer ---------- */
+  details.help { margin-top: 12px; font-size: 12px; }
+  details.help summary {
+    cursor: pointer; font-weight: 600; color: var(--ink-dim); list-style: none;
+    display: flex; align-items: center; gap: 7px; min-height: 34px;
+  }
+  details.help summary::-webkit-details-marker { display: none; }
+  details.help summary::before {
+    content: '?'; font-family: var(--font-mono); font-size: 9px; width: 16px; height: 16px;
+    border-radius: 50%; display: grid; place-items: center;
+    background: rgba(255, 255, 255, .1); flex: none;
+  }
+  details.help ol { margin: 6px 0 0 17px; color: var(--ink-dim); font-size: 11.5px; line-height: 1.65; }
+  details.help li { margin-bottom: 4px; }
+  details.help code { font-family: var(--font-mono); font-size: 10.5px; background: rgba(255, 255, 255, .08); border-radius: 4px; padding: 1px 5px; }
+
+  .foot { margin-top: 26px; max-width: 720px; text-align: center; font-size: 11px; color: var(--ink-faint); line-height: 1.75; }
+  .foot b { color: var(--ink-dim); font-weight: 600; }
+  .foot a { color: var(--ink-dim); text-decoration: none; border-bottom: 1px solid rgba(255, 255, 255, .22); }
+  .foot a:hover { color: var(--gold); border-color: var(--gold); }
+  .foot code { font-family: var(--font-mono); font-size: 10px; background: rgba(255, 255, 255, .06); border-radius: 4px; padding: 1px 5px; }
+  .foot .rule { width: 46px; height: 1px; background: var(--line-strong); margin: 14px auto; }
+
+  :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+  @media (max-width: 900px) {
+    .arcade { grid-template-columns: 1fr; }
+    .globe-wrap, .globe { width: 214px; }
+    .globe { height: 186px; }
+  }
+  @media (max-width: 430px) {
+    body { padding: 18px 11px 34px; }
+    .card { padding: 13px; }
+    .cat-name { font-size: 9px; }
+    .tier-sub { font-size: 10.5px; }
+    .prize.stack .asset-stage { height: 220px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: .001ms !important; animation-iteration-count: 1 !important;
+      transition-duration: .001ms !important;
+    }
+  }
 </style>
 </head>
 <body>
 
-<h1>🐕🪙 DOGE Gumball Machine</h1>
-<div class="tagline">1 DOGE in the slot → a random image, 3D asset, song, or game SFX pops out. Fair. Verifiable. CC0.</div>
+<!-- Shiba Inu (Doge-style) mascot, defined once and reused -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="shiba" viewBox="0 0 64 64">
+    <path d="M18.5 23 L13.5 5.5 L31 16.5 Z" fill="#e0a75c" stroke="#a4702f" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M45.5 23 L50.5 5.5 L33 16.5 Z" fill="#e0a75c" stroke="#a4702f" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M19.6 20.6 L17 10.5 L26.4 16.8 Z" fill="#b07a37"/>
+    <path d="M44.4 20.6 L47 10.5 L37.6 16.8 Z" fill="#b07a37"/>
+    <ellipse cx="32" cy="34" rx="16.5" ry="14.5" fill="#e0a75c"/>
+    <path d="M32 19.5c-9 0-16 6-16.5 14.5 0 0 6-6.5 16.5-6.5s16.5 6.5 16.5 6.5C48 25.5 41 19.5 32 19.5Z" fill="#d99a4d" opacity=".65"/>
+    <ellipse cx="32" cy="41" rx="11" ry="8" fill="#fdf1dd"/>
+    <ellipse cx="21.5" cy="36.5" rx="3.4" ry="2.6" fill="#f6c98a" opacity=".85"/>
+    <ellipse cx="42.5" cy="36.5" rx="3.4" ry="2.6" fill="#f6c98a" opacity=".85"/>
+    <ellipse cx="32" cy="35.8" rx="3.3" ry="2.5" fill="#2b2118"/>
+    <ellipse cx="30.9" cy="35" rx="1.1" ry=".8" fill="#5c4c3c" opacity=".8"/>
+    <path d="M32 38.3v3.2M32 41.5c-1.6 2-4.6 2.2-6.4.4M32 41.5c1.6 2 4.6 2.2 6.4.4"
+          fill="none" stroke="#2b2118" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="25" cy="29.6" r="2.3" fill="#2b2118"/>
+    <circle cx="39" cy="29.6" r="2.3" fill="#2b2118"/>
+    <circle cx="25.8" cy="28.8" r=".85" fill="#fff" opacity=".85"/>
+    <circle cx="39.8" cy="28.8" r=".85" fill="#fff" opacity=".85"/>
+    <path d="M20.6 24.6c1.8-1.5 4.2-1.7 6-.6M37.4 24c1.8-1.1 4.2-.9 6 .6"
+          fill="none" stroke="#a4702f" stroke-width="1.4" stroke-linecap="round" opacity=".7"/>
+  </symbol>
+</svg>
 
-<div class="machine">
-  <svg class="shiba-mascot" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Shiba Inu mascot">
-    <path d="M56 46 q12 -6 10 -16 q-1 -6 -9 -5" fill="none" stroke="#d98a2b" stroke-width="8" stroke-linecap="round"/>
-    <path d="M18 34 q0 16 10 22 q14 8 30 0 q8 -6 6 -16 q-4 -8 -14 -8 q-14 4 -32 2z" fill="#d98a2b"/>
-    <path d="M26 44 q6 10 16 10 q14 0 20 -8 q-8 8 -36 2z" fill="#f7e7c8"/>
-    <ellipse cx="24" cy="56" rx="6" ry="4" fill="#f7e7c8"/>
-    <ellipse cx="36" cy="57" rx="6" ry="4" fill="#f7e7c8"/>
-    <circle cx="30" cy="26" r="13" fill="#d98a2b"/>
-    <path d="M19 16 L14 5 L26 11 z" fill="#d98a2b"/>
-    <path d="M41 16 L46 5 L34 11 z" fill="#d98a2b"/>
-    <path d="M20 15 L16.5 8 L23 12 z" fill="#8a5c1e"/>
-    <path d="M40 15 L43.5 8 L37 12 z" fill="#8a5c1e"/>
-    <ellipse cx="30" cy="31" rx="7.5" ry="6" fill="#f7e7c8"/>
-    <ellipse cx="30" cy="28" rx="2.4" ry="1.8" fill="#3a2410"/>
-    <circle cx="23.5" cy="24" r="2" fill="#2b2b2b"/>
-    <circle cx="36.5" cy="24" r="2" fill="#2b2b2b"/>
-    <path d="M26 33 q4 3.5 8 0" fill="none" stroke="#3a2410" stroke-width="1.6" stroke-linecap="round"/>
-    <circle cx="20" cy="29" r="2" fill="#e8a05a" opacity=".8"/>
-    <circle cx="40" cy="29" r="2" fill="#e8a05a" opacity=".8"/>
-  </svg>
-  <div class="cap"></div>
-  <div class="globe" id="globe"></div>
-  <div class="body">
-    <div class="slot"></div>
-    <div class="slot-label">INSERT COIN</div>
-    <div class="glass-door" id="window">🪙 Insert a coin and pull the lever!</div>
-    <div class="controls">
-      <button class="lever" id="lever" aria-label="Pull the lever" title="Pull the lever!">🎰</button>
-      <div class="brand"><b>DOGE</b>GUMBALL·CO</div>
+<div class="shell">
+  <header class="topbar">
+    <div class="mark"><svg aria-hidden="true"><use href="#shiba"/></svg></div>
+    <div class="wordmark">
+      <h1>DOGE <span>Gumball</span> Machine</h1>
+      <p>1 DOGE → one blind capsule. Provably fair, forever CC0.</p>
     </div>
-  </div>
-</div>
-
-<div class="panel">
-  <h2>🧾 Your turn <span class="badge" id="modeBadge">DEMO MODE</span></h2>
-
-  <div class="tiers">
-    <div class="tier active" id="tierBlind" role="button" tabindex="0" aria-pressed="true">
-      <div class="price" id="priceBlind">1 DOGE</div>
-      <div class="what">🥚 Blind — total surprise</div>
+    <div class="spacer"></div>
+    <div class="badges">
+      <span class="badge" id="modeBadge">…</span>
+      <span class="badge" id="stockBadge" title="Receipts dispensed so far">—</span>
     </div>
-    <div class="tier" id="tierDirected" role="button" tabindex="0" aria-pressed="false">
-      <div class="price" id="priceDirected">5 DOGE</div>
-      <div class="what">🎯 Directed — you choose</div>
-    </div>
-  </div>
+  </header>
 
-  <div id="descRow" style="display:none">
-    <div class="row" style="margin-bottom:6px">
-      <div style="flex:1; min-width:0">
-        <label class="small" for="desc">Describe your gumball (or pick a category below)</label>
-        <textarea id="desc" maxlength="300" placeholder="e.g. 'a glowing potion bottle', 'a chiptune boss theme'"></textarea>
+  <main class="arcade">
+    <!-- ================= MACHINE ================= -->
+    <div class="col">
+      <div class="cabinet">
+        <div class="cab-top"></div>
+        <div class="globe-wrap">
+          <div class="globe" id="globe" aria-hidden="true"></div>
+          <svg class="mascot" aria-hidden="true"><use href="#shiba"/></svg>
+        </div>
+        <div class="cab-body">
+          <div class="plate">
+            <div class="coin-col">
+              <div class="coin-slot" aria-hidden="true"></div>
+              <span class="coin-price" id="slotPrice">1 DOGE</span>
+            </div>
+            <button class="crank" id="crank" type="button" aria-label="Turn the crank to dispense a gumball" title="Turn the crank">
+              <span class="crank-bar" aria-hidden="true"></span>
+            </button>
+            <div class="cab-brand"><b>CC0</b><span>GACHAPON</span></div>
+          </div>
+          <div class="chute">
+            <div class="chute-label">DISPENSER CHUTE</div>
+            <button class="tray-capsule" id="capsule" type="button" hidden aria-label="Open your capsule">
+              <span class="cap-top" aria-hidden="true"></span>
+              <span class="cap-bottom" id="capBottom" aria-hidden="true"></span>
+            </button>
+            <div class="chute-hint" id="chuteHint">Turn the crank</div>
+          </div>
+        </div>
       </div>
+
+      <!-- what's in the machine -->
+      <section class="card">
+        <span class="eyebrow">Inside the machine</span>
+        <ul class="catalogue">
+          <li>
+            <span class="dot" style="background:var(--img)"></span>
+            <span class="cl"><b>Image</b><small>FLUX.1-schnell · ~15s</small></span>
+          </li>
+          <li>
+            <span class="dot" style="background:var(--c3d)"></span>
+            <span class="cl"><b>3D asset</b><small>TRELLIS.2 · GLB · 1–2 min</small></span>
+          </li>
+          <li>
+            <span class="dot" style="background:var(--song)"></span>
+            <span class="cl"><b>Song</b><small>ACE-Step · 1–3 min</small></span>
+          </li>
+          <li>
+            <span class="dot" style="background:var(--sfx)"></span>
+            <span class="cl"><b>Game SFX</b><small>procedural · instant</small></span>
+          </li>
+        </ul>
+        <p class="cat-note">Every capsule is dedicated <b>CC0</b> — public domain, no attribution required.</p>
+      </section>
     </div>
-    <div class="row">
-      <div style="flex:1; min-width:0">
-        <label class="small" for="cat">…and/or choose the asset type</label>
-        <select id="cat">
-          <option value="">🎲 Surprise me — random type</option>
-          <option value="image">🖼️ Image</option>
-          <option value="asset_3d">🧊 3D Asset</option>
-          <option value="song">🎵 Song</option>
-          <option value="game_sfx">🔊 Game SFX</option>
-        </select>
-      </div>
+
+    <!-- ================= DECK ================= -->
+    <div class="col">
+      <section class="card">
+        <div class="card-head">
+          <h2>Your turn</h2>
+          <span class="note" id="deckNote">blind draw</span>
+        </div>
+
+        <span class="eyebrow">1 · Pick a tier</span>
+        <div class="tiers" role="group" aria-label="Gumball tier">
+          <button class="tier" id="tierBlind" type="button" aria-pressed="true">
+            <span class="tier-row">
+              <span class="tier-price" id="priceBlind">1 DOGE</span>
+              <span class="tier-tag">🎲 BLIND</span>
+            </span>
+            <span class="tier-sub">Total surprise — category and prompt both drawn from your tx hash.</span>
+          </button>
+          <button class="tier" id="tierDirected" type="button" aria-pressed="false">
+            <span class="tier-row">
+              <span class="tier-price" id="priceDirected">5 DOGE</span>
+              <span class="tier-tag">🎯 DIRECTED</span>
+            </span>
+            <span class="tier-sub">You describe it and pick the capsule colour.</span>
+          </button>
+        </div>
+
+        <span class="eyebrow" style="margin-top:14px">2 · Capsule colours
+          <span id="catHint" style="text-transform:none;letter-spacing:0;color:var(--ink-faint)">— random in blind mode</span>
+        </span>
+        <div class="taxonomy" role="group" aria-label="Asset type">
+          <button class="cat" type="button" data-cat="image" aria-pressed="false">
+            <span class="cat-dot" style="background:var(--img)"></span><span class="cat-name">Image</span>
+          </button>
+          <button class="cat" type="button" data-cat="asset_3d" aria-pressed="false">
+            <span class="cat-dot" style="background:var(--c3d)"></span><span class="cat-name">3D GLB</span>
+          </button>
+          <button class="cat" type="button" data-cat="song" aria-pressed="false">
+            <span class="cat-dot" style="background:var(--song)"></span><span class="cat-name">Song</span>
+          </button>
+          <button class="cat" type="button" data-cat="game_sfx" aria-pressed="false">
+            <span class="cat-dot" style="background:var(--sfx)"></span><span class="cat-name">SFX</span>
+          </button>
+        </div>
+
+        <div class="field" id="promptField" style="margin-top:12px;display:none">
+          <label for="desc">What should be inside?</label>
+          <textarea id="desc" maxlength="300" rows="2"
+            placeholder="e.g. “a glowing potion bottle”, “a chiptune boss theme”, “corgi astronaut, pixel art”"></textarea>
+          <div class="hint"><span id="descCount">0</span>/300 characters — this exact text goes into your receipt, so the same tx always regenerates the same prize.</div>
+        </div>
+
+        <div class="paybox" id="payBox">
+          <div class="qr"><img id="qrImg" alt="QR code for the machine's Dogecoin address"></div>
+          <div class="payinfo">
+            <span class="lbl">Send DOGE here</span>
+            <div class="addr" id="addrText">…</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <button class="mini-btn gold" id="copyAddr" type="button">Copy address</button>
+              <button class="mini-btn" id="copyAmount" type="button">Copy amount</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="field" style="margin-top:12px">
+          <label for="tx">3 · Your transaction hash</label>
+          <div class="input-wrap">
+            <input type="text" id="tx" placeholder="64 hex characters from your wallet" spellcheck="false" autocomplete="off">
+            <span class="hex-count" id="hexCount">0/64</span>
+          </div>
+          <div class="hint" id="txHint">Demo mode: paste any 64 hex characters to feel the whole flow — payment checking is skipped here.</div>
+        </div>
+
+        <button class="action" id="go" type="button" style="margin-top:13px">
+          <span aria-hidden="true">🪙</span> Insert coin &amp; turn the crank
+        </button>
+
+        <div class="steps" id="steps" style="margin-top:11px" aria-hidden="true">
+          <div class="step" data-step="pay">Pay</div>
+          <div class="step" data-step="verify">Verify</div>
+          <div class="step" data-step="draw">Draw</div>
+          <div class="step" data-step="gen">Forge</div>
+          <div class="step" data-step="done">Dispense</div>
+        </div>
+        <div class="status" id="status" role="status" aria-live="polite" style="margin-top:8px"></div>
+
+        <div class="err" id="errBox">
+          <b id="errTitle"></b>
+          <p id="errHelp"></p>
+        </div>
+
+        <details class="help">
+          <summary>How do I find my transaction hash?</summary>
+          <ol>
+            <li>Send <b id="helpPrice">1</b> DOGE to the machine address above — scan the QR from a phone wallet.</li>
+            <li>Wait for <b id="helpConf">1</b> confirmation. Usually a minute or two.</li>
+            <li>Open the transaction in your wallet and copy its <b>transaction ID / hash</b> (64 hex characters).</li>
+            <li>Paste it above and turn the crank. Same hash = same gumball, forever. One payment = one gumball.</li>
+            <li>Overpayment is a donation — the machine never sends change.</li>
+          </ol>
+        </details>
+      </section>
+
+      <!-- ============ REVEAL ============ -->
+      <section class="reveal-card" id="revealCard">
+        <div class="reveal-empty" id="revealEmpty">
+          <div style="font-size:26px;margin-bottom:8px">🎰</div>
+          <b>1.</b> Pick a tier and paste your tx hash.<br>
+          <b>2.</b> Turn the crank — a colour-coded capsule drops.<br>
+          <b>3.</b> <b>Click the capsule</b> to crack it open.
+        </div>
+
+        <div class="prize" id="prize">
+          <div class="asset-stage" id="assetStage"></div>
+          <div class="prize-body">
+            <div class="prize-tags" id="prizeTags"></div>
+            <div class="prize-title" id="prizeTitle"></div>
+            <div class="prize-meta" id="prizeMeta"></div>
+            <div class="prize-actions" id="prizeActions"></div>
+          </div>
+        </div>
+
+        <div class="verify-note" id="verifyNote"></div>
+        <div class="receipt" id="receipt"></div>
+
+        <div class="shelf" id="shelf">
+          <span class="eyebrow" style="margin-bottom:6px">Your shelf · this browser</span>
+          <div class="shelf-row" id="shelfRow"></div>
+        </div>
+      </section>
     </div>
-  </div>
+  </main>
 
-  <div class="addr-box" id="addrBox"></div>
-
-  <div class="row">
-    <input type="text" id="tx" placeholder="Paste your DOGE transaction hash (64 hex chars)" spellcheck="false" autocomplete="off">
-  </div>
-  <div class="hint" id="hint">Demo mode: paste any 64 hex chars — payment verification is skipped here.</div>
-
-  <button class="btn green" id="go">🪙 Insert coin & pull the lever!</button>
-  <div class="steps" id="steps">
-    <div class="step" data-step="coin">🪙 Coin in</div>
-    <div class="step" data-step="verify">🔍 Verifying on-chain</div>
-    <div class="step" data-step="draw">🎲 Drawing</div>
-    <div class="step" data-step="gen">✨ Generating</div>
-    <div class="step" data-step="done">🎁 Dispensed</div>
-  </div>
-  <div class="status" id="status"></div>
-  <div class="error-box" id="errorBox"><b id="errorTitle"></b><div class="help" id="errorHelp"></div></div>
-
-  <div class="reveal" id="reveal">
-    <div class="asset-box" id="assetBox">🎲</div>
-    <div class="meta" id="revealText"></div>
-    <div class="verify-note" id="verifyNote"></div>
-    <div class="row" style="justify-content:center">
-      <button class="btn ghost" id="btnReceipt">🧾 Toggle receipt JSON</button>
-      <button class="btn ghost" id="btnVerify">✅ Verify fairness</button>
-      <button class="btn ghost" id="btnCopy">📋 Copy receipt</button>
-    </div>
-    <div class="receipt" id="receipt"></div>
-  </div>
-
-  <details class="help">
-    <summary>❓ How do I find my transaction hash?</summary>
-    <ol>
-      <li>Send <b id="helpPrice">1</b> DOGE to the machine address (shown above).</li>
-      <li>Open your wallet, find the outgoing transaction, and copy its <b>transaction ID / hash</b> (64 hex characters).</li>
-      <li>Paste it above and pull the lever. The machine verifies it on-chain, then dispenses.</li>
-      <li>Same tx hash = same gumball, forever — keep it as your receipt ticket. One payment = one gumball.</li>
-    </ol>
-  </details>
-</div>
-
-<div class="footer">
-  <b>Fairness:</b> the prize is a pure function of your tx hash — no server secrets, no rigging.
-  Every receipt can be replayed: <code>python3 scripts/verify_fairness.py outputs/receipts.jsonl</code>.<br>
-  <b>Open source:</b> all code MIT, all models Apache-2.0/MIT, every asset dedicated <b>CC0 (public domain)</b>.
-  See <a href="https://github.com/Jpalmer95/doge-gumball" target="_blank" rel="noopener">github.com/Jpalmer95/doge-gumball</a>
-  · Not financial advice. It's a gumball machine.<br>
-  <b>House rules:</b> no refunds — payments are final once confirmed on-chain. This is a novelty machine, not a financial product.
-  Any DOGE over the listed price is a much-appreciated donation that keeps the machine stocked. 🐕
+  <footer class="foot">
+    <b>Fairness:</b> the prize is a pure function of your tx hash. SHA-256 seeds the draw — no server secrets, no rigging.
+    Every receipt replays: <code>python3 scripts/verify_fairness.py outputs/receipts.jsonl</code>.
+    <div class="rule"></div>
+    <b>Open source:</b> code MIT · models Apache-2.0/MIT · every dispensed asset is dedicated <b>CC0 (public domain)</b>.
+    · <a href="https://github.com/Jpalmer95/doge-gumball" target="_blank" rel="noopener">github.com/Jpalmer95/doge-gumball</a>
+    <div class="rule"></div>
+    <b>House rules:</b> no refunds — payments are final once confirmed on-chain. This is a novelty machine, not a financial product.
+    Any DOGE over the listed price is a much-appreciated donation that keeps the machine stocked.
+  </footer>
 </div>
 
 <script>
 /* ============================================================
-   DOGE Gumball Machine frontend
-   - DEMO mode (default, and on GitHub Pages): works standalone.
-     The demo draw is client-side and NOT the real machine draw —
-     it's a preview of the experience.
-   - LIVE mode: the Space serves this file with BACKEND_URL='' so
-     it talks to its own /gumball/* API. You can also force live
-     mode on any copy with ?backend=https://space-url.
+   DOGE Gumball Machine — Capsule Arcade frontend
+   - DEMO mode (default, and on GitHub Pages): runs standalone.
+     Its draw is a client-side preview and is NOT the machine's draw.
+   - LIVE mode: the Space serves this file with BACKEND_URL='' so it
+     talks to its own /gumball/* API. Force live mode on any copy
+     with ?backend=https://space-url
    ============================================================ */
 const params = new URLSearchParams(location.search);
 const BACKEND_URL = (params.get('backend') || '').replace(/\/+$/, '') || null; //SPACE_LIVE_INJECT
+const IS_LIVE = BACKEND_URL !== null;
 
-const CATEGORY_EMOJI = { image: '🖼️', asset_3d: '🧊', song: '🎵', game_sfx: '🔊' };
-const CATEGORY_NAME = { image: 'Image', asset_3d: '3D Asset', song: 'Song', game_sfx: 'Game SFX' };
-const CATEGORY_WAIT = { image: '~15s', asset_3d: '1-2 min', song: '1-3 min', game_sfx: 'instant' };
-const BLIND_POOL = {
-  image: ['space llama', 'giant gumball', 'robot barista', 'corgi astronaut', 'mushroom wizard', 'alien cat'],
-  asset_3d: ['robot companion', 'treasure chest', 'magic potion bottle', 'star fighter ship', 'floating island'],
-  song: ['synthwave', 'lo-fi beats', 'orchestral fanfare', 'chiptune adventure', 'disco', 'jazz trio'],
-  game_sfx: ['coin pickup', 'power-up blip', 'explosion', 'jump boing', 'laser zap', 'level-up jingle'],
+const CATS = {
+  image:    { name: 'Image',    emoji: '🖼️', color: '#f59e0b', glow: 'rgba(245,158,11,.20)',  wait: '~15s' },
+  asset_3d: { name: '3D Asset', emoji: '🧊', color: '#38bdf8', glow: 'rgba(56,189,248,.20)',  wait: '1–2 min' },
+  song:     { name: 'Song',     emoji: '🎵', color: '#e879f9', glow: 'rgba(232,121,249,.20)', wait: '1–3 min' },
+  game_sfx: { name: 'Game SFX', emoji: '🔊', color: '#34d399', glow: 'rgba(52,211,153,.20)',  wait: 'instant' },
 };
-const STYLE = ['flat vector illustration', 'pixel art', 'comic book style', 'children\u2019s book art', 'sticker style'];
+const CAT_KEYS = Object.keys(CATS);
 const TX_RE = /^[0-9a-fA-F]{64}$/;
+const SHELF_KEY = 'doge-gumball-shelf-v1';
+const MAX_SHELF = 12;
+const STEP_ORDER = ['pay', 'verify', 'draw', 'gen', 'done'];
 
 const $ = id => document.getElementById(id);
 let tier = 'blind';
+let selectedCat = null;
 let busy = false;
 let machineInfo = null;
-let lastReceipt = null;
-const IS_LIVE = BACKEND_URL !== null;
+let pending = null;
+let globeBalls = [];
 
-/* ---- gumball decoration ---- */
-const COLORS = ['#e74c3c', '#f1c40f', '#2ecc71', '#3498db', '#9b59b6', '#e67e22', '#1abc9c', '#ff6b9d'];
-function scatterGumballs() {
+/* ------------------------------------------------------------ audio */
+let actx = null;
+function audioCtx() {
+  if (!actx) {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return null;
+    try { actx = new Ctx(); } catch (e) { return null; }
+  }
+  if (actx.state === 'suspended') actx.resume();
+  return actx;
+}
+function blip(freq, start, dur, type, vol) {
+  const a = audioCtx(); if (!a) return;
+  try {
+    const t = a.currentTime + start;
+    const o = a.createOscillator(), g = a.createGain();
+    o.type = type || 'triangle';
+    o.frequency.setValueAtTime(freq, t);
+    o.frequency.exponentialRampToValueAtTime(Math.max(60, freq * .6), t + dur);
+    g.gain.setValueAtTime(vol || .14, t);
+    g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    o.connect(g); g.connect(a.destination);
+    o.start(t); o.stop(t + dur + .02);
+  } catch (e) {}
+}
+function ratchet() { blip(300 + Math.random() * 90, 0, .05, 'square', .08); }
+function chime() { [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => blip(f, i * .07, .26, 'sine', .13)); }
+function thud() { blip(140, 0, .16, 'sine', .2); }
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+/* ------------------------------------------------------- demo RNG */
+function mulberry32(seed) {
+  let a = seed >>> 0;
+  return function () {
+    a = (a + 0x6D2B79F5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const DEMO_POOLS = {
+  image: {
+    a: ['cartoon', 'glowing', 'chunky', 'retro', 'cosmic', 'sparkly', 'neon', 'low-poly', 'misty'],
+    s: ['space llama', 'giant gumball', 'robot barista', 'corgi astronaut', 'mushroom wizard', 'cassette-tape monster', 'cactus knight', 'alien cat', 'bubblegum ghost'],
+    t: ['flat vector illustration', 'pixel art', 'watercolor', 'voxel art', 'comic book style', 'sticker style', 'cyberpunk poster'],
+  },
+  asset_3d: {
+    a: ['cute', 'stylized', 'chunky', 'glowing', 'rusted', 'miniature', 'epic'],
+    s: ['robot companion', 'treasure chest', 'magic potion bottle', 'star fighter ship', 'woodland mushroom house', 'floating island', 'gemstone crystal', 'monster egg'],
+    t: ['game-ready prop', 'toy collectible', 'board game piece', 'diorama piece'],
+  },
+  song: {
+    a: ['bouncy', 'dreamy', 'epic', 'funky', 'melancholy', 'triumphant', 'playful'],
+    s: ['synthwave', 'lo-fi beats', 'orchestral fanfare', 'acoustic folk', 'chiptune adventure', 'disco', 'jazz trio'],
+    t: ['8-bar loop', 'full track with a catchy hook', 'video game battle theme', 'boss theme'],
+  },
+  game_sfx: {
+    s: ['coin pickup', 'power-up blip', 'explosion', 'jump boing', 'laser zap', 'level-up jingle', 'menu select', 'boss roar', 'bubble pop', 'victory fanfare'],
+  },
+};
+function demoPreview(tx, desc, cat) {
+  const h = tx.toLowerCase();
+  const seed32 = parseInt(h.slice(0, 8), 16) >>> 0;
+  const rnd = mulberry32(seed32);
+  const category = cat || CAT_KEYS[Math.floor(rnd() * CAT_KEYS.length)];
+  const pool = DEMO_POOLS[category];
+  let prompt;
+  if (desc) {
+    prompt = desc;
+  } else if (category === 'game_sfx') {
+    prompt = pool.s[Math.floor(rnd() * pool.s.length)];
+  } else {
+    prompt = pool.a[Math.floor(rnd() * pool.a.length)] + ' ' +
+             pool.s[Math.floor(rnd() * pool.s.length)] + ', ' +
+             pool.t[Math.floor(rnd() * pool.t.length)];
+  }
+  const modelSeed = Math.floor(rnd() * 2147483647);
+  return {
+    spec: {
+      category: category,
+      prompt: prompt,
+      model_seed: modelSeed,
+      tier: (desc || cat) ? 'directed' : 'blind',
+      tx_hash: h,
+    },
+  };
+}
+
+/* ----------------------------------------------------------- globe */
+const BALL_COLORS = ['#f59e0b', '#38bdf8', '#e879f9', '#34d399'];
+function packGlobe() {
   const globe = $('globe');
-  globe.querySelectorAll('.gumball').forEach(g => g.remove());
-  for (let i = 0; i < 26; i++) {
-    const g = document.createElement('div');
-    g.className = 'gumball';
-    const size = 16 + Math.random() * 14;
-    g.style.width = g.style.height = size + 'px';
-    g.style.left = (4 + Math.random() * 84) + '%';
-    g.style.top = (6 + Math.random() * 80) + '%';
-    g.style.background = COLORS[Math.floor(Math.random() * COLORS.length)];
-    globe.appendChild(g);
+  globeBalls.forEach(b => b.el.remove());
+  globeBalls = [];
+  const w = globe.clientWidth, h = globe.clientHeight;
+  if (!w || !h) return;
+  const R = 15, step = R * 2 + 2;
+  const cols = Math.max(1, Math.floor((w - 6) / step));
+  const rowW = (cols - 1) * step;
+  const startX = (w - rowW) / 2;
+  /* Real gumball globes sit ~two-thirds full: pack from the bottom up
+     to just past the widest point, leaving clear glass at the top. */
+  const floorY = h * 0.34;
+  let y = h - 6 - R, made = 0;
+  while (y > floorY && made < 40) {
+    for (let i = 0; i < cols; i++) {
+      if (made >= 40) break;
+      /* keep balls inside the dome's curve near the bottom */
+      const jx = startX + i * step;
+      const edge = Math.min(jx, w - jx);
+      if (edge < 12) continue;
+      const el = document.createElement('div');
+      el.className = 'cap-ball';
+      el.style.background = BALL_COLORS[made % BALL_COLORS.length];
+      el.style.left = (jx - R) + 'px';
+      el.style.top = (y - R) + 'px';
+      const rot = (Math.random() * 44 - 22);
+      el.style.transform = 'rotate(' + rot + 'deg)';
+      globe.appendChild(el);
+      globeBalls.push({ el: el, rot: rot });
+      made++;
+    }
+    y -= step - 2;
   }
 }
-
-/* ---- steps ---- */
-function setStep(step) {
-  document.querySelectorAll('.steps .step').forEach(s =>
-    s.classList.toggle('done', ['coin','verify','draw','gen'].indexOf(step) > ['coin','verify','draw','gen'].indexOf(s.dataset.step)));
-  document.querySelectorAll('.steps .step').forEach(s =>
-    s.classList.toggle('active', s.dataset.step === step));
-  $('steps').classList.add('show');
+function jiggleGlobe() {
+  globeBalls.forEach(b => {
+    const dx = (Math.random() - .5) * 26;
+    const dy = -Math.random() * 46;
+    const dr = (Math.random() - .5) * 80;
+    b.el.style.transform = 'translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px) rotate(' + (b.rot + dr).toFixed(1) + 'deg)';
+  });
+  setTimeout(() => {
+    globeBalls.forEach(b => { b.el.style.transform = 'rotate(' + b.rot.toFixed(1) + 'deg)'; });
+  }, 480);
 }
-function clearSteps() { $('steps').classList.remove('show'); }
-
-/* ---- error panel ---- */
-function showError(title, help) {
-  $('errorTitle').textContent = title;
-  $('errorHelp').textContent = help || '';
-  $('errorBox').classList.add('show');
+/* A dispensed capsule physically leaves the globe — sells the mechanic. */
+function consumeBall() {
+  if (!globeBalls.length) return;
+  const pick = globeBalls[globeBalls.length - 1];
+  pick.el.style.transition = 'transform .3s ease, opacity .3s ease';
+  pick.el.style.transform += ' scale(.2)';
+  pick.el.style.opacity = '0';
+  setTimeout(() => pick.el.remove(), 320);
+  globeBalls.pop();
 }
-function clearError() { $('errorBox').classList.remove('show'); }
 
-/* ---- live machine info ---- */
+/* ----------------------------------------------------------- steps */
+function setStep(key) {
+  const idx = STEP_ORDER.indexOf(key);
+  document.querySelectorAll('.step').forEach(el => {
+    const i = STEP_ORDER.indexOf(el.dataset.step);
+    el.classList.toggle('done', i < idx);
+    el.classList.toggle('active', i === idx);
+  });
+}
+function clearSteps() {
+  document.querySelectorAll('.step').forEach(el => el.classList.remove('done', 'active'));
+}
+
+/* --------------------------------------------------- machine info */
+function currentPrice() {
+  if (machineInfo && machineInfo.tiers && machineInfo.tiers[tier]) return machineInfo.tiers[tier].doge;
+  return tier === 'blind' ? 1 : 5;
+}
+function refreshSlotPrice() { $('slotPrice').textContent = currentPrice() + ' DOGE'; }
+
 async function loadMachineInfo() {
-  if (!IS_LIVE) { $('modeBadge').textContent = 'DEMO MODE'; return; }
+  if (!IS_LIVE) {
+    $('modeBadge').textContent = 'DEMO MODE';
+    $('modeBadge').className = 'badge demo';
+    $('stockBadge').textContent = 'LOCAL PREVIEW';
+    return;
+  }
   $('modeBadge').textContent = 'LIVE';
   try {
-    const res = await fetch(BACKEND_URL + '/gumball/machine');
+    const res = await fetch(BACKEND_URL + '/gumball/machine', { cache: 'no-store' });
     const m = await res.json();
     machineInfo = m;
+    $('stockBadge').textContent = (m.receipts_count || 0) + ' DISPENSED';
     if (m.open) {
-      $('modeBadge').classList.add('open');
-      $('addrBox').style.display = 'block';
-      $('addrBox').innerHTML = '<span class="copy" id="copyAddr" title="Copy address">📋 copy</span>'
-        + 'Send your DOGE to:<br><b>' + m.address + '</b>'
-        + '<br><img src="' + BACKEND_URL + '/gumball/qr" alt="QR code of the machine address" '
-        + 'style="margin-top:8px;width:132px;height:132px;background:#fff;border:2px solid var(--ink);border-radius:10px">';
-      $('copyAddr').addEventListener('click', () => copyText(m.address, 'Address copied!'));
+      $('modeBadge').className = 'badge live';
+      $('payBox').classList.add('show');
+      $('addrText').textContent = m.address;
+      $('qrImg').src = BACKEND_URL + '/gumball/qr';
+      $('copyAddr').onclick = () => copyText(m.address, 'Address copied');
+      $('copyAmount').onclick = () => copyText(String(currentPrice()), 'Amount copied');
       $('priceBlind').textContent = m.tiers.blind.doge + ' DOGE';
       $('priceDirected').textContent = m.tiers.directed.doge + ' DOGE';
       $('helpPrice').textContent = m.tiers.blind.doge;
-      $('hint').textContent = 'Send DOGE to the address above, wait for ' + m.min_confirmations
-        + ' confirmation, then paste your tx hash below.';
+      $('helpConf').textContent = m.min_confirmations;
+      $('txHint').innerHTML = 'Send DOGE to the address above, wait for <b>' + m.min_confirmations +
+        ' confirmation</b>, then paste the hash. Retrying the same hash is always safe.';
     } else {
-      $('modeBadge').classList.add('closed');
-      $('hint').textContent = m.address_hint;
+      $('modeBadge').className = 'badge closed';
+      $('modeBadge').textContent = 'WALLET PENDING';
+      $('txHint').textContent = m.address_hint || 'The operator is wiring up the wallet — check back soon.';
     }
-    // refresh categories from the machine
-    const sel = $('cat');
-    sel.innerHTML = '<option value="">🎲 Surprise me — random type</option>';
-    m.categories.forEach(c => {
-      const o = document.createElement('option');
-      o.value = c.key; o.textContent = c.emoji + ' ' + c.name + ' (' + c.wait + ')';
-      sel.appendChild(o);
-    });
+    refreshSlotPrice();
   } catch (e) {
-    $('hint').textContent = 'Live mode — backend unreachable right now.';
+    $('modeBadge').className = 'badge closed';
+    $('modeBadge').textContent = 'OFFLINE';
+    $('txHint').textContent = 'Live mode — the machine is unreachable right now. Try again in a moment.';
   }
 }
 
-function copyText(text, okMsg) {
-  navigator.clipboard.writeText(text).then(() => {
-    const old = $('status').textContent; $('status').textContent = '✅ ' + okMsg;
-    setTimeout(() => { $('status').textContent = old; }, 1500);
-  }).catch(() => {});
+function copyText(text, msg) {
+  const done = () => flash(msg || 'Copied');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(() => flash('Copy blocked — select it manually'));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); done(); } catch (e) { flash('Copy blocked'); }
+    ta.remove();
+  }
+}
+function flash(msg) {
+  const el = $('status');
+  const old = el.innerHTML;
+  el.innerHTML = '<b>✓ ' + msg + '</b>';
+  setTimeout(() => { if (el.innerHTML.indexOf('<b>✓') === 0) el.innerHTML = old; }, 1600);
 }
 
-/* ---- demo draw (client-side only; NOT the real machine draw) ---- */
-function demoDraw() {
-  const categories = Object.keys(BLIND_POOL);
-  const cat = categories[Math.floor(Math.random() * categories.length)];
-  const subject = BLIND_POOL[cat][Math.floor(Math.random() * BLIND_POOL[cat].length)];
-  let prompt = cat === 'game_sfx' ? subject : subject + ', ' + STYLE[Math.floor(Math.random() * STYLE.length)];
-  return { category: cat, prompt, model_seed: Math.floor(Math.random() * 2 ** 31) };
+/* ---------------------------------------------------------- errors */
+function showError(title, help) {
+  $('errTitle').textContent = title;
+  $('errHelp').textContent = help || '';
+  $('errBox').classList.add('show');
+}
+function clearError() { $('errBox').classList.remove('show'); }
+
+/* --------------------------------------------------------- capsule */
+function dropCapsule(category, state) {
+  const cap = $('capsule');
+  const info = CATS[category] || CATS.image;
+  $('capBottom').style.background = info.color;
+  cap.hidden = false;
+  cap.className = 'tray-capsule';
+  cap.style.color = info.color;
+  void cap.offsetWidth;
+  cap.classList.add(state || 'landed');
+  $('chuteHint').innerHTML = '<b style="color:' + info.color + '">' + info.emoji + ' ' + info.name + ' capsule</b> — click to open';
+  thud();
+}
+function resetCapsule() {
+  const cap = $('capsule');
+  cap.hidden = true;
+  cap.className = 'tray-capsule';
+  $('chuteHint').textContent = 'Turn the crank';
 }
 
-/* ---- the big reveal ---- */
+/* --------------------------------------------- tiers and categories */
+function setTier(t) {
+  tier = t;
+  $('tierBlind').setAttribute('aria-pressed', String(t === 'blind'));
+  $('tierDirected').setAttribute('aria-pressed', String(t === 'directed'));
+  $('deckNote').textContent = t === 'blind' ? 'blind draw' : 'directed draw';
+  $('promptField').style.display = t === 'directed' ? 'flex' : 'none';
+  if (t === 'blind' && selectedCat) {
+    selectedCat = null;
+    document.querySelectorAll('.cat').forEach(el => el.setAttribute('aria-pressed', 'false'));
+  }
+  $('catHint').textContent = selectedCat
+    ? '— ' + CATS[selectedCat].name + ' locked in'
+    : (t === 'blind' ? '— random in blind mode' : '— pick one, or let the draw choose');
+  $('helpPrice').textContent = currentPrice();
+  refreshSlotPrice();
+}
+function selectCat(cat) {
+  const next = (selectedCat === cat) ? null : cat;
+  if (next && tier !== 'directed') setTier('directed');
+  selectedCat = next;
+  document.querySelectorAll('.cat').forEach(el => {
+    el.setAttribute('aria-pressed', String(el.dataset.cat === selectedCat));
+  });
+  $('catHint').textContent = selectedCat
+    ? '— ' + CATS[selectedCat].name + ' locked in'
+    : '— pick one, or let the draw choose';
+}
+$('tierBlind').addEventListener('click', () => setTier('blind'));
+$('tierDirected').addEventListener('click', () => setTier('directed'));
+document.querySelectorAll('.cat').forEach(el => el.addEventListener('click', () => selectCat(el.dataset.cat)));
+
+/* ------------------------------------------------------- tx inputs */
+$('tx').addEventListener('input', e => {
+  const v = e.target.value.trim().replace(/\s+/g, '');
+  const n = (v.match(/[0-9a-fA-F]/g) || []).length;
+  const ok = TX_RE.test(v);
+  $('hexCount').textContent = n + '/64';
+  $('hexCount').className = 'hex-count' + (ok ? ' ok' : '');
+  e.target.style.borderColor = (v && !ok) ? 'rgba(239,91,76,.55)' : '';
+});
+$('desc').addEventListener('input', e => { $('descCount').textContent = e.target.value.length; });
+
+/* -------------------------------------------------------- dispense */
+function validate(tx, desc, cat) {
+  if (tier === 'directed' && !desc && !cat) {
+    showError('Directed capsules need a description or a colour',
+      'You paid for direction — either describe the asset, click a capsule colour, or switch to the 1 DOGE blind draw for a total surprise.');
+    return false;
+  }
+  if (!tx) {
+    showError('Paste your transaction hash first',
+      'The tx hash is your ticket: it proves the payment and seeds the draw. Demo mode accepts any 64 hex characters.');
+    return false;
+  }
+  if (!TX_RE.test(tx)) {
+    showError('That doesn’t look like a tx hash',
+      'A Dogecoin transaction hash is exactly 64 hex characters (0–9, a–f). Copy it from your wallet’s transaction details — not the receiving address.');
+    return false;
+  }
+  return true;
+}
+
+async function getPreview(tx, desc, cat) {
+  if (!IS_LIVE) return demoPreview(tx, tier === 'directed' ? desc : null, tier === 'directed' ? cat : null);
+  setStep('verify');
+  $('status').innerHTML = '🔍 Verifying payment on-chain…';
+  const body = { tx_hash: tx };
+  if (tier === 'directed') { if (desc) body.description = desc; if (cat) body.category = cat; }
+  const res = await fetch(BACKEND_URL + '/gumball/preview', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const err = new Error(data.error || 'preview failed');
+    err.api = data;
+    throw err;
+  }
+  return data;
+}
+
 async function pullLever() {
   if (busy) return;
   clearError();
-  const tx = $('tx').value.trim();
-  const desc = $('desc').value.trim();
-  const cat = $('cat').value;
 
-  if (tier === 'directed' && !desc && !cat) {
-    showError('Directed gumballs need a description or category',
-      'Pay 5 DOGE and tell the machine what you want — or switch to Blind (1 DOGE) for a total surprise.');
-    return;
-  }
-  if (tx && !TX_RE.test(tx)) {
-    showError('That doesn\u2019t look like a tx hash',
-      'A Dogecoin transaction hash is exactly 64 hex characters (0-9, a-f). Copy it from your wallet\u2019s transaction details.');
-    return;
-  }
+  const tx = $('tx').value.trim().replace(/\s+/g, '');
+  const desc = $('desc').value.trim();
+  const cat = selectedCat;
+  if (!validate(tx, desc, cat)) return;
 
   busy = true;
-  $('lever').disabled = true; $('go').disabled = true;
-  $('reveal').classList.remove('show');
-  $('receipt').classList.remove('show');
+  pending = null;
+  $('go').disabled = true;
+  $('crank').disabled = true;
+  $('crank').classList.remove('turning');
+  $('prize').classList.remove('show');
+  $('prize').classList.remove('stack');
   $('verifyNote').classList.remove('show');
-  $('window').textContent = '🪙 Coin in…';
-  $('status').textContent = '';
+  $('receipt').classList.remove('show');
+  $('revealEmpty').style.display = 'block';
+  $('revealEmpty').innerHTML = '⚙️ <b>Cranking…</b> checking your hash and shaking the globe.';
+  resetCapsule();
 
-  const globe = $('globe');
-  globe.classList.remove('shake'); void globe.offsetWidth; globe.classList.add('shake');
-  setStep('coin');
-  await new Promise(r => setTimeout(r, 1300));
+  audioCtx();
+  $('crank').classList.add('turning');
+  setStep('pay');
+  $('status').innerHTML = '🪙 Coin in — turning the crank…';
+  jiggleGlobe();
+  [0, 105, 210, 315, 420].forEach(d => setTimeout(ratchet, d));
 
-  if (IS_LIVE && tx) {
-    await liveDispense(tx, desc, cat);
-  } else {
-    if (!tx) {
-      $('status').textContent = '🪙 Demo: paste any 64 hex chars to feel the flow.';
-      busy = false; $('lever').disabled = false; $('go').disabled = false; clearSteps();
-      return;
-    }
-    setStep('draw');
-    await new Promise(r => setTimeout(r, 700));
-    const o = demoDraw();
-    setStep('gen');
-    await new Promise(r => setTimeout(r, 900));
-    $('window').textContent = '✨ ' + CATEGORY_EMOJI[o.category] + ' It pops out a ' + CATEGORY_NAME[o.category] + '!';
-    $('assetBox').innerHTML = demoAsset(o.category);
-    $('revealText').innerHTML = '<b>' + CATEGORY_NAME[o.category] + '</b> · ' + o.prompt
-      + '<br><small>demo draw (seed ' + o.model_seed + ') — connect a live backend for real paid draws</small>';
-    setStep('done');
-    $('reveal').classList.add('show');
-    $('status').textContent = '🎉 Demo complete. The real machine runs on HF: ' + (machineInfo ? '' : 'jkorstad-doge-gumball.hf.space');
-  }
-  busy = false;
-  $('lever').disabled = false; $('go').disabled = false;
-}
-
-function demoAsset(category) {
-  if (category === 'game_sfx') return '<audio controls src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA="></audio>';
-  if (category === 'song') return '<div style="font-size:14px">🎵 demo song placeholder<br><small>(the real machine returns an actual track)</small></div>';
-  if (category === 'asset_3d') return '<div style="font-size:14px">🧊 3D model preview (GLB)<br><small>(the real machine returns a downloadable .glb)</small></div>';
-  return '🖼️';
-}
-
-/* ---- live dispense ---- */
-async function liveDispense(tx, desc, cat) {
+  let preview;
   try {
-    setStep('verify');
-    $('window').textContent = '🔍 Verifying payment on-chain…';
+    preview = await getPreview(tx, desc, cat);
+  } catch (e) {
+    fail(e);
+    return;
+  }
+
+  const spec = preview.spec || {};
+  const category = spec.category || 'image';
+  const prompt = spec.prompt || '';
+  const seed = spec.model_seed;
+
+  /* The colour is known the moment the hash is read — drop the capsule
+     now and let it "forge" while verification + generation run. */
+  await wait(420);
+  $('crank').classList.remove('turning');
+  setStep('draw');
+  $('status').innerHTML = '🎲 Draw locked: <b>' + CATS[category].name + '</b> — the hash picked it, not us.';
+  dropCapsule(category, 'working');
+
+  if (!IS_LIVE) {
+    await wait(850);
+    setStep('gen');
+    $('status').innerHTML = '✨ Forging your <b>' + CATS[category].name + '</b> locally…';
+    await wait(650);
+    finish({
+      demo: true,
+      spec: { category: category, prompt: prompt, model_seed: seed, tier: spec.tier || tier, tx_hash: tx.toLowerCase() },
+      asset: demoAsset(category, prompt, seed),
+    });
+    return;
+  }
+
+  setStep('gen');
+  $('status').innerHTML = '✨ Forging your <b>' + CATS[category].name + '</b> on the machine… ' +
+    '<span style="color:var(--ink-faint)">' + (CATS[category].wait || '') + ' — your capsule is already in the tray.</span>';
+
+  try {
     const body = { tx_hash: tx };
     if (tier === 'directed') { if (desc) body.description = desc; if (cat) body.category = cat; }
     const res = await fetch(BACKEND_URL + '/gumball/dispense', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
     });
     const data = await res.json().catch(() => ({}));
-
     if (!res.ok) {
-      showError(data.error || 'The machine jammed', data.help || 'Retry with the same tx hash.');
-      $('window').textContent = '😿 The machine jammed. Same tx hash = same draw, so retrying is safe!';
-      clearSteps();
-      return;
+      const err = new Error(data.error || 'The machine jammed');
+      err.api = data;
+      throw err;
     }
-
-    lastReceipt = data;
-    setStep('draw');
-    $('window').textContent = '🎲 Drawing from your tx hash…';
-    await new Promise(r => setTimeout(r, 600));
-    setStep('gen');
-    $('window').textContent = '✨ Generating ' + CATEGORY_NAME[data.spec.category] + '… '
-      + (CATEGORY_WAIT[data.spec.category] || '') + ' ⏳';
-
-    const asset = data.asset || {};
-    if (asset.url) {
-      if (asset.mime && asset.mime.startsWith('image/')) {
-        $('assetBox').innerHTML = '<img src="' + asset.url + '" alt="your gumball">';
-      } else if (asset.mime && asset.mime.startsWith('audio/')) {
-        $('assetBox').innerHTML = '<audio controls src="' + asset.url + '"></audio>';
-      } else if (asset.url.endsWith('.glb')) {
-        $('assetBox').innerHTML = '<div style="font-size:14px">🧊 3D model ready</div>'
-          + '<a class="btn dl" href="' + asset.url + '" download>⬇️ Download GLB</a>';
-      } else {
-        $('assetBox').innerHTML = '<a class="btn dl" href="' + asset.url + '" target="_blank" rel="noopener">⬇️ Download asset</a>';
-      }
-    } else {
-      $('assetBox').textContent = '🎁';
+    if (machineInfo) {
+      machineInfo.receipts_count = (machineInfo.receipts_count || 0) + 1;
+      $('stockBadge').textContent = machineInfo.receipts_count + ' DISPENSED';
     }
-
-    const lic = asset.license || '?';
-    $('revealText').innerHTML =
-      '<b>' + CATEGORY_EMOJI[data.spec.category] + ' ' + CATEGORY_NAME[data.spec.category] + '</b>'
-      + ' · ' + (data.spec.prompt || '')
-      + '<br><span class="license">' + lic + '</span>'
-      + ' <small>receipt <b>' + data.id + '</b> · model ' + (asset.model || '?') + '</small>';
-
-    $('receipt').textContent = JSON.stringify(data, null, 2);
-    setStep('done');
-    $('window').textContent = '🎁 Gumball dispensed! Keep your tx hash — it\u2019s your receipt ticket.';
-    $('reveal').classList.add('show');
-    $('status').textContent = '🎉 Dispensed! Verify it below, or replay it anytime with scripts/verify_fairness.py';
+    finish(data);
   } catch (e) {
-    showError('Network error', 'Could not reach the machine: ' + e.message);
-    $('window').textContent = '😿 Connection lost — try again in a moment.';
-    clearSteps();
+    fail(e);
   }
 }
 
-/* ---- receipt actions ---- */
-$('btnReceipt').addEventListener('click', () => $('receipt').classList.toggle('show'));
-$('btnCopy').addEventListener('click', () => {
-  if (lastReceipt) copyText(JSON.stringify(lastReceipt, null, 2), 'Receipt copied!');
-});
-$('btnVerify').addEventListener('click', async () => {
+function fail(e) {
+  const api = e.api || {};
+  showError(api.error || e.message || 'Something went wrong',
+    api.help || 'Retry with the SAME tx hash — the draw is locked to it, so nothing is lost.');
+  const cap = $('capsule');
+  if (!cap.hidden) cap.className = 'tray-capsule jammed working';
+  $('status').innerHTML = '😿 The machine jammed — <b>same hash = same draw</b>, so retrying is safe.';
+  $('revealEmpty').style.display = 'block';
+  $('revealEmpty').innerHTML = 'Nothing is lost: any retry with the same hash reproduces the same capsule.';
+  clearSteps();
+  busy = false;
+  $('go').disabled = false;
+  $('crank').disabled = false;
+  $('crank').classList.remove('turning');
+}
+
+function finish(payload) {
+  const spec = payload.spec || {};
+  const category = spec.category || 'image';
+  pending = {
+    category: category,
+    prompt: spec.prompt || '',
+    seed: spec.model_seed,
+    demo: !!payload.demo,
+    asset: payload.asset || {},
+    receipt: payload.demo ? null : payload,
+    opened: false,
+  };
+  setStep('done');
+  const cap = $('capsule');
+  if (!cap.hidden) cap.className = 'tray-capsule landed';
+  consumeBall();
+  $('chuteHint').innerHTML = '<b style="color:' + CATS[category].color + '">Ready!</b> Click the capsule';
+  $('revealEmpty').style.display = 'block';
+  $('revealEmpty').innerHTML = '🎁 A <b>' + CATS[category].name + '</b> capsule is sitting in the tray.<br><b>Click it</b> to crack it open.';
+  $('status').innerHTML = '🎉 Dispensed — pop the capsule to see your ' + CATS[category].name.toLowerCase() + '.';
+  busy = false;
+  $('go').disabled = false;
+  $('crank').disabled = false;
+  chime();
+}
+
+/* ------------------------------------------------------ demo assets */
+function demoAsset(category, prompt, seed) {
+  const rnd = mulberry32(seed || 1);
+  if (category === 'image') return { kind: 'image', svg: demoArt(rnd) };
+  if (category === 'asset_3d') return { kind: '3d-demo' };
+  return { kind: 'audio-demo', mode: category === 'song' ? 'loop' : 'sfx' };
+}
+function demoArt(rnd) {
+  const hues = [Math.floor(rnd() * 360), Math.floor(rnd() * 360), Math.floor(rnd() * 360)];
+  const parts = [];
+  const n = 7 + Math.floor(rnd() * 5);
+  for (let i = 0; i < n; i++) {
+    const kind = Math.floor(rnd() * 3);
+    const cx = rnd() * 132, cy = rnd() * 132, r = 10 + rnd() * 34;
+    const fill = 'hsl(' + hues[i % 3] + ' 78% ' + (52 + Math.floor(rnd() * 22)) + '%)';
+    const op = (.30 + rnd() * .50).toFixed(2);
+    if (kind === 0) {
+      parts.push('<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + r.toFixed(1) + '" fill="' + fill + '" opacity="' + op + '"/>');
+    } else if (kind === 1) {
+      parts.push('<rect x="' + (cx - r / 2).toFixed(1) + '" y="' + (cy - r / 2).toFixed(1) + '" width="' + r.toFixed(1) +
+        '" height="' + r.toFixed(1) + '" rx="' + (r / 4).toFixed(1) + '" fill="' + fill + '" opacity="' + op +
+        '" transform="rotate(' + (rnd() * 90).toFixed(0) + ' ' + cx.toFixed(1) + ' ' + cy.toFixed(1) + ')"/>');
+    } else {
+      parts.push('<path d="M' + cx.toFixed(1) + ' ' + (cy - r).toFixed(1) + 'L' + (cx + r).toFixed(1) + ' ' +
+        (cy + r).toFixed(1) + 'L' + (cx - r).toFixed(1) + ' ' + (cy + r).toFixed(1) + 'Z" fill="' + fill +
+        '" opacity="' + op + '"/>');
+    }
+  }
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 132 132" width="132" height="132">' +
+    '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
+    '<stop offset="0" stop-color="hsl(' + hues[0] + ' 68% 15%)"/>' +
+    '<stop offset="1" stop-color="hsl(' + hues[1] + ' 62% 8%)"/>' +
+    '</linearGradient></defs><rect width="132" height="132" fill="url(#g)"/>' + parts.join('') + '</svg>';
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+
+/* ------------------------------------------------------------ unbox */
+function openCapsule() {
+  if (!pending || pending.opened) return;
+  pending.opened = true;
+  $('capsule').classList.add('cracked');
+  chime();
+  setTimeout(() => renderPrize(pending), 190);
+}
+
+function renderPrize(p) {
+  const info = CATS[p.category] || CATS.image;
+  const asset = p.asset || {};
+  const isAudio = p.demo
+    ? (asset.kind === 'audio-demo')
+    : (asset.mime && asset.mime.indexOf('audio/') === 0);
+  const is3D = p.demo ? (asset.kind === '3d-demo') : (asset.url && /\.glb$/i.test(asset.url));
+
+  $('revealEmpty').style.display = 'none';
+  const prize = $('prize');
+  prize.classList.add('show');
+  prize.classList.toggle('stack', !!(isAudio || is3D));
+
+  const stage = $('assetStage');
+  stage.innerHTML = '';
+  stage.className = 'asset-stage' + (isAudio ? ' audio' : '');
+  stage.style.borderColor = info.color;
+  stage.style.background = info.glow;
+
+  const tags = $('prizeTags');
+  tags.innerHTML = '';
+  const addTag = (text, cls) => {
+    const s = document.createElement('span');
+    s.className = 'tag ' + (cls || '');
+    s.textContent = text;
+    tags.appendChild(s);
+  };
+  addTag(info.emoji + ' ' + info.name);
+  addTag('CC0', 'cc0');
+  if (p.demo) addTag('Demo', 'demo');
+
+  $('prizeTitle').textContent = p.prompt || info.name;
+  const seedTxt = (p.seed === undefined || p.seed === null) ? '—' : '#' + p.seed;
+  $('prizeMeta').textContent = p.demo
+    ? 'demo draw · seed ' + seedTxt + ' · this is a local preview, not the machine’s draw'
+    : 'receipt ' + ((p.receipt && p.receipt.id) || '—') + ' · seed ' + seedTxt +
+      (asset.model ? ' · ' + asset.model : '');
+
+  const actions = $('prizeActions');
+  actions.innerHTML = '';
+
+  if (p.demo) {
+    if (asset.kind === 'image') {
+      const img = document.createElement('img');
+      img.src = asset.svg;
+      img.alt = 'Demo gumball artwork';
+      stage.appendChild(img);
+    } else if (asset.kind === '3d-demo') {
+      stage.innerHTML = '<div class="cube-wrap"><div class="cube">' +
+        '<div class="f1"></div><div class="f2"></div><div class="f3"></div>' +
+        '<div class="f4"></div><div class="f5"></div><div class="f6"></div></div></div>';
+    } else {
+      stage.appendChild(buildDemoPlayer(asset.mode, p.seed));
+    }
+
+    const live = document.createElement('a');
+    live.className = 'mini-btn gold';
+    live.href = 'https://huggingface.co/spaces/jkorstad/doge-gumball';
+    live.target = '_blank';
+    live.rel = 'noopener';
+    live.textContent = 'Open the live machine →';
+    actions.appendChild(live);
+
+    const again = document.createElement('button');
+    again.type = 'button';
+    again.className = 'mini-btn';
+    again.textContent = 'Draw another';
+    again.onclick = () => {
+      resetCapsule();
+      prize.classList.remove('show');
+      $('revealEmpty').style.display = 'block';
+      $('revealEmpty').innerHTML = 'Paste a tx hash and turn the crank again.';
+      pending = null;
+    };
+    actions.appendChild(again);
+    $('revealCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    return;
+  }
+
+  const url = asset.url || '';
+  const mime = asset.mime || '';
+
+  if (mime.indexOf('image/') === 0) {
+    const img = document.createElement('img');
+    img.src = url;
+    img.alt = p.prompt || 'Your gumball';
+    stage.appendChild(img);
+  } else if (mime.indexOf('audio/') === 0 || /\.(mp3|wav|ogg|m4a|flac)$/i.test(url)) {
+    stage.appendChild(buildPlayer(url));
+  } else if (is3D) {
+    stage.innerHTML = '<div class="ph">🧊</div>';
+    loadModelViewer().then(ok => {
+      if (!ok) return;
+      const mv = document.createElement('model-viewer');
+      mv.setAttribute('src', url);
+      mv.setAttribute('camera-controls', '');
+      mv.setAttribute('auto-rotate', '');
+      mv.setAttribute('shadow-intensity', '0.9');
+      mv.setAttribute('environment-image', 'neutral');
+      mv.setAttribute('alt', p.prompt || '3D gumball');
+      stage.innerHTML = '';
+      stage.appendChild(mv);
+    });
+  } else {
+    stage.innerHTML = '<div class="ph">🎁</div>';
+  }
+
+  if (url) {
+    const dl = document.createElement('a');
+    dl.className = 'mini-btn gold';
+    dl.href = url;
+    dl.download = '';
+    dl.target = '_blank';
+    dl.rel = 'noopener';
+    dl.textContent = 'Download';
+    actions.appendChild(dl);
+  }
+
+  const btnReceipt = document.createElement('button');
+  btnReceipt.type = 'button';
+  btnReceipt.className = 'mini-btn';
+  btnReceipt.textContent = 'Receipt JSON';
+  btnReceipt.onclick = () => {
+    $('receipt').textContent = JSON.stringify(p.receipt, null, 2);
+    $('receipt').classList.toggle('show');
+  };
+  actions.appendChild(btnReceipt);
+
+  const btnCopy = document.createElement('button');
+  btnCopy.type = 'button';
+  btnCopy.className = 'mini-btn';
+  btnCopy.textContent = 'Copy receipt';
+  btnCopy.onclick = () => copyText(JSON.stringify(p.receipt, null, 2), 'Receipt copied');
+  actions.appendChild(btnCopy);
+
+  const btnVerify = document.createElement('button');
+  btnVerify.type = 'button';
+  btnVerify.className = 'mini-btn';
+  btnVerify.textContent = 'Verify fairness';
+  btnVerify.onclick = () => verifyPrize(p.receipt && p.receipt.id);
+  actions.appendChild(btnVerify);
+
+  saveToShelf(p);
+  $('revealCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+async function verifyPrize(id) {
   const note = $('verifyNote');
-  note.classList.add('show');
-  note.textContent = '🔎 Replaying the receipt\u2019s spec from its tx hash…';
   note.className = 'verify-note show';
+  note.textContent = '🔎 Replaying this receipt from its tx hash…';
+  if (!id) { note.className = 'verify-note show bad'; note.textContent = 'No receipt id on this item.'; return; }
   try {
-    const res = await fetch(BACKEND_URL + '/gumball/verify/' + lastReceipt.id);
+    const res = await fetch(BACKEND_URL + '/gumball/verify/' + encodeURIComponent(id), { cache: 'no-store' });
     const v = await res.json();
-    note.classList.toggle('ok', v.verified);
-    note.classList.toggle('bad', !v.verified);
+    note.className = 'verify-note show ' + (v.verified ? 'ok' : 'bad');
     note.textContent = v.verified
-      ? '✅ VERIFIED — this gumball\u2019s category, prompt and seed are a pure function of its tx hash. No rigging possible.'
-      : '❌ MISMATCH: ' + (v.problems || []).join('; ');
+      ? '✅ VERIFIED — category, prompt and seed are a pure function of this tx hash. Nothing could have been rigged.'
+      : '❌ MISMATCH: ' + ((v.problems || []).join('; ') || 'this receipt does not replay');
   } catch (e) {
+    note.className = 'verify-note show bad';
     note.textContent = 'Verification endpoint unreachable: ' + e.message;
   }
+}
+
+/* --------------------------------------------------------- audio UI */
+function buildDemoPlayer(mode, seed) {
+  const wrap = document.createElement('div');
+  wrap.className = 'player';
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.textContent = '▶';
+  btn.setAttribute('aria-label', 'Play demo audio');
+  const canvas = document.createElement('canvas');
+  canvas.width = 300; canvas.height = 26;
+  const t = document.createElement('span');
+  t.className = 't';
+  t.textContent = '0:00';
+  wrap.append(btn, canvas, t);
+
+  const c2d = canvas.getContext('2d');
+  const rnd = mulberry32(seed || 7);
+  const bars = Array.from({ length: 26 }, () => .25 + rnd() * .75);
+  let playing = false, raf = null, started = 0;
+
+  function draw(level) {
+    const w = canvas.width, h = canvas.height;
+    c2d.clearRect(0, 0, w, h);
+    const bw = w / bars.length;
+    for (let i = 0; i < bars.length; i++) {
+      const v = playing ? Math.min(1, bars[i] * (.35 + level * .95)) : bars[i] * .22;
+      const bh = Math.max(2, v * (h - 3));
+      c2d.fillStyle = playing ? '#f6b93b' : 'rgba(242,243,247,.26)';
+      c2d.fillRect(i * bw + 1, (h - bh) / 2, bw - 2, bh);
+    }
+  }
+  function tick() {
+    const s = Math.floor((Date.now() - started) / 1000);
+    t.textContent = '0:' + String(Math.min(59, s)).padStart(2, '0');
+    const lvl = .45 + Math.abs(Math.sin((Date.now() - started) / 240)) * .55;
+    draw(lvl);
+    raf = requestAnimationFrame(tick);
+  }
+  btn.onclick = () => {
+    if (playing) {
+      playing = false;
+      btn.textContent = '▶';
+      cancelAnimationFrame(raf);
+      draw(0);
+      return;
+    }
+    audioCtx();
+    playing = true;
+    btn.textContent = '❚❚';
+    started = Date.now();
+    const notes = mode === 'loop'
+      ? [261.63, 329.63, 392.0, 523.25, 392.0, 329.63, 261.63]
+      : [880, 1046.5, 1318.5];
+    notes.forEach((f, i) => blip(f, i * (mode === 'loop' ? .22 : .06), mode === 'loop' ? .32 : .11,
+      mode === 'loop' ? 'triangle' : 'square', .12));
+    tick();
+    const len = mode === 'loop' ? 2800 : 1200;
+    setTimeout(() => {
+      if (!playing) return;
+      playing = false;
+      btn.textContent = '▶';
+      cancelAnimationFrame(raf);
+      draw(0);
+    }, len);
+  };
+  draw(0);
+  return wrap;
+}
+
+function buildPlayer(src) {
+  const wrap = document.createElement('div');
+  wrap.className = 'player';
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.textContent = '▶';
+  btn.setAttribute('aria-label', 'Play audio');
+  const canvas = document.createElement('canvas');
+  canvas.width = 300; canvas.height = 26;
+  const t = document.createElement('span');
+  t.className = 't';
+  t.textContent = '0:00';
+  const el = document.createElement('audio');
+  el.src = src;
+  el.preload = 'metadata';
+  el.crossOrigin = 'anonymous';
+  el.style.display = 'none';
+  wrap.append(btn, canvas, t, el);
+
+  const c2d = canvas.getContext('2d');
+  let analyser = null, data = null, raf = null;
+  const ctx = audioCtx();
+  if (ctx) {
+    try {
+      const srcNode = ctx.createMediaElementSource(el);
+      analyser = ctx.createAnalyser();
+      analyser.fftSize = 128;
+      srcNode.connect(analyser);
+      analyser.connect(ctx.destination);
+      data = new Uint8Array(analyser.frequencyBinCount);
+    } catch (e) { analyser = null; }
+  }
+
+  function draw() {
+    const w = canvas.width, h = canvas.height;
+    c2d.clearRect(0, 0, w, h);
+    const n = 26, bw = w / n;
+    if (analyser && data) analyser.getByteFrequencyData(data);
+    for (let i = 0; i < n; i++) {
+      let v = 0;
+      if (analyser && data) v = data[Math.floor(i * data.length / n)] / 255;
+      const bh = Math.max(2, v * (h - 3));
+      c2d.fillStyle = el.paused ? 'rgba(242,243,247,.26)' : '#f6b93b';
+      c2d.fillRect(i * bw + 1, (h - bh) / 2, bw - 2, bh);
+    }
+    raf = requestAnimationFrame(draw);
+  }
+
+  el.addEventListener('timeupdate', () => {
+    const s = Math.floor(el.currentTime || 0);
+    const d = Math.floor(el.duration || 0);
+    t.textContent = Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0') +
+      (d ? ' / ' + Math.floor(d / 60) + ':' + String(d % 60).padStart(2, '0') : '');
+  });
+  el.addEventListener('play', () => { btn.textContent = '❚❚'; audioCtx(); draw(); });
+  el.addEventListener('pause', () => { btn.textContent = '▶'; });
+  el.addEventListener('ended', () => { btn.textContent = '▶'; });
+  el.addEventListener('error', () => { t.textContent = 'unavailable'; });
+
+  btn.addEventListener('click', () => {
+    audioCtx();
+    if (el.paused) el.play().catch(() => { t.textContent = 'tap again to play'; });
+    else el.pause();
+  });
+  draw();
+  return wrap;
+}
+
+/* ----------------------------------------------------- model-viewer */
+let mvPromise = null;
+function loadModelViewer() {
+  if (customElements.get('model-viewer')) return Promise.resolve(true);
+  if (mvPromise) return mvPromise;
+  mvPromise = new Promise(resolve => {
+    const s = document.createElement('script');
+    s.type = 'module';
+    s.src = 'https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js';
+    s.onload = () => setTimeout(() => resolve(!!customElements.get('model-viewer')), 250);
+    s.onerror = () => resolve(false);
+    document.head.appendChild(s);
+    setTimeout(() => resolve(!!customElements.get('model-viewer')), 9000);
+  });
+  return mvPromise;
+}
+
+/* ------------------------------------------------------------ shelf */
+function readShelf() {
+  try { return JSON.parse(localStorage.getItem(SHELF_KEY) || '[]') || []; } catch (e) { return []; }
+}
+function saveToShelf(p) {
+  const items = readShelf();
+  items.unshift({
+    id: p.receipt && p.receipt.id,
+    category: p.category,
+    prompt: p.prompt,
+    seed: p.seed,
+    url: p.asset && p.asset.url,
+    mime: p.asset && p.asset.mime,
+    model: p.asset && p.asset.model,
+    ts: Date.now(),
+  });
+  try { localStorage.setItem(SHELF_KEY, JSON.stringify(items.slice(0, MAX_SHELF))); } catch (e) {}
+  renderShelf();
+}
+function renderShelf() {
+  const items = readShelf();
+  const shelf = $('shelf'), row = $('shelfRow');
+  if (!items.length) { shelf.classList.remove('show'); return; }
+  shelf.classList.add('show');
+  row.innerHTML = '';
+  items.forEach(it => {
+    const info = CATS[it.category] || CATS.image;
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'chip';
+    b.title = it.prompt || info.name;
+    const dot = document.createElement('i');
+    dot.style.background = info.color;
+    b.appendChild(dot);
+    const label = it.prompt || info.name;
+    b.appendChild(document.createTextNode(label.length > 26 ? label.slice(0, 26) + '…' : label));
+    b.onclick = () => {
+      pending = {
+        category: it.category,
+        prompt: it.prompt,
+        seed: it.seed,
+        demo: false,
+        asset: it.url ? { url: it.url, mime: it.mime, model: it.model } : {},
+        receipt: it.id ? { id: it.id, spec: { category: it.category, prompt: it.prompt, model_seed: it.seed } } : null,
+        opened: true,
+      };
+      renderPrize(pending);
+    };
+    row.appendChild(b);
+  });
+}
+
+/* ----------------------------------------------------------- wiring */
+$('go').addEventListener('click', pullLever);
+$('crank').addEventListener('click', pullLever);
+$('capsule').addEventListener('click', openCapsule);
+$('revealCard').addEventListener('click', e => {
+  if (!pending || pending.opened) return;
+  if (e.target.closest('button, a, .shelf')) return;
+  openCapsule();
 });
 
-/* ---- wiring ---- */
-function setTier(t) {
-  tier = t;
-  $('tierBlind').classList.toggle('active', t === 'blind');
-  $('tierDirected').classList.toggle('active', t === 'directed');
-  $('tierBlind').setAttribute('aria-pressed', t === 'blind');
-  $('tierDirected').setAttribute('aria-pressed', t === 'directed');
-  $('descRow').style.display = t === 'directed' ? 'block' : 'none';
-  if (t === 'directed') $('helpPrice').textContent = (machineInfo ? machineInfo.tiers.directed.doge : 5);
-  else $('helpPrice').textContent = (machineInfo ? machineInfo.tiers.blind.doge : 1);
-}
-$('tierBlind').addEventListener('click', () => setTier('blind'));
-$('tierDirected').addEventListener('click', () => setTier('directed'));
-$('tierBlind').addEventListener('keydown', e => { if (e.key === 'Enter') setTier('blind'); });
-$('tierDirected').addEventListener('keydown', e => { if (e.key === 'Enter') setTier('directed'); });
-$('go').addEventListener('click', pullLever);
-$('lever').addEventListener('click', pullLever);
+let packTimer = null;
+window.addEventListener('resize', () => {
+  clearTimeout(packTimer);
+  packTimer = setTimeout(packGlobe, 140);
+});
 
-scatterGumballs();
+setTier('blind');
+packGlobe();
+setTimeout(packGlobe, 240);
+renderShelf();
 loadMachineInfo();
 </script>
 </body>

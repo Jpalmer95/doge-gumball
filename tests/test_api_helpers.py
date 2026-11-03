@@ -80,3 +80,21 @@ def test_friendly_errors_have_help():
 def test_friendly_insufficient_mentions_tiers():
     out = api_helpers.friendly_error(payments.InsufficientAmount("paid 100 sat, need 500M"))
     assert "1 DOGE" in out["help"] and "5 DOGE" in out["help"]
+
+
+def test_preview_draw_deterministic_and_matches_category():
+    tx = "cd" * 32
+    p1 = api_helpers.preview_draw({"tx_hash": tx})
+    p2 = api_helpers.preview_draw({"tx_hash": tx})
+    assert p1 == p2
+    assert p1["spec"]["category"] in config.CATEGORIES
+    assert p1["category_meta"]["name"]
+
+    p_dir = api_helpers.preview_draw({
+        "tx_hash": tx,
+        "description": "glowing shiba statue",
+        "category": "asset_3d",
+    })
+    assert p_dir["spec"]["category"] == "asset_3d"
+    assert p_dir["spec"]["prompt"] == "glowing shiba statue"
+    assert p_dir["spec"]["tier"] == "directed"
