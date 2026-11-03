@@ -418,6 +418,11 @@
   .asset-stage img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .asset-stage model-viewer { width: 100%; height: 100%; background: transparent; }
   .asset-stage .ph { font-size: 30px; opacity: .8; }
+  .stage-badge {
+    position: absolute; left: 6px; bottom: 6px; z-index: 2;
+    font-family: var(--font-mono); font-size: 8px; letter-spacing: .6px; text-transform: uppercase;
+    background: rgba(0, 0, 0, .62); color: #fff; padding: 2px 6px; border-radius: 4px;
+  }
 
   .prize-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
   .prize-tags { display: flex; gap: 5px; flex-wrap: wrap; }
@@ -1368,7 +1373,7 @@ function renderPrize(p) {
   $('prizeTitle').textContent = p.prompt || info.name;
   const seedTxt = (p.seed === undefined || p.seed === null) ? '—' : '#' + p.seed;
   $('prizeMeta').textContent = p.demo
-    ? 'demo draw · seed ' + seedTxt + ' · this is a local preview, not the machine’s draw'
+    ? 'demo draw · seed ' + seedTxt + ' · local preview only — press “Open the live machine” for real draws'
     : 'receipt ' + ((p.receipt && p.receipt.id) || '—') + ' · seed ' + seedTxt +
       (asset.model ? ' · ' + asset.model : '');
 
@@ -1379,8 +1384,12 @@ function renderPrize(p) {
     if (asset.kind === 'image') {
       const img = document.createElement('img');
       img.src = asset.svg;
-      img.alt = 'Demo gumball artwork';
+      img.alt = 'Seeded demo tile (placeholder for generated art)';
       stage.appendChild(img);
+      const badge = document.createElement('span');
+      badge.className = 'stage-badge';
+      badge.textContent = 'demo tile';
+      stage.appendChild(badge);
     } else if (asset.kind === '3d-demo') {
       stage.innerHTML = '<div class="cube-wrap"><div class="cube">' +
         '<div class="f1"></div><div class="f2"></div><div class="f3"></div>' +
