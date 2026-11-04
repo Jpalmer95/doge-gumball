@@ -478,6 +478,10 @@
   .err.show { display: block; }
   .err b { font-size: 12.5px; color: #ffb4ac; display: block; margin-bottom: 3px; }
   .err p { font-size: 11.5px; color: rgba(255, 200, 194, .78); line-height: 1.45; }
+  .err .err-detail {
+    font-family: var(--font-mono); font-size: 10px; color: rgba(255, 180, 172, .6);
+    margin-top: 5px; word-break: break-all;
+  }
 
   /* ---------- receipt ---------- */
   .receipt {
@@ -740,6 +744,7 @@
         <div class="err" id="errBox">
           <b id="errTitle"></b>
           <p id="errHelp"></p>
+          <p class="err-detail" id="errDetail"></p>
         </div>
 
         <details class="help">
@@ -1055,9 +1060,18 @@ function flash(msg) {
 }
 
 /* ---------------------------------------------------------- errors */
-function showError(title, help) {
+const CODE_TITLES = {
+  bad_tx_format: 'That doesn’t look like a tx hash',
+  tx_not_found: 'Transaction not found on Dogecoin',
+  unconfirmed: 'Payment isn’t confirmed yet',
+  insufficient: 'That payment is under the tier price',
+  already_used: 'This hash already bought a gumball',
+  generation: 'The generator jammed',
+};
+function showError(title, help, detail) {
   $('errTitle').textContent = title;
   $('errHelp').textContent = help || '';
+  $('errDetail').textContent = detail || '';
   $('errBox').classList.add('show');
 }
 function clearError() { $('errBox').classList.remove('show'); }
@@ -1254,8 +1268,12 @@ async function pullLever() {
 
 function fail(e) {
   const api = e.api || {};
-  showError(api.error || e.message || 'Something went wrong',
-    api.help || 'Retry with the SAME tx hash — the draw is locked to it, so nothing is lost.');
+  const mapped = CODE_TITLES[api.code];
+  showError(
+    mapped || api.error || e.message || 'Something went wrong',
+    api.help || 'Retry with the SAME tx hash — the draw is locked to it, so nothing is lost.',
+    mapped ? (api.error || '') : ''
+  );
   const cap = $('capsule');
   if (!cap.hidden) cap.className = 'tray-capsule jammed working';
   $('status').innerHTML = '😿 The machine jammed — <b>same hash = same draw</b>, so retrying is safe.';
